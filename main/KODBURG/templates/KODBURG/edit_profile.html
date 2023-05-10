@@ -1,0 +1,42 @@
+{% extends 'KODBURG/shablon_main.html' %} {% block title%}Профиль
+{{user.username}}{% endblock title %} {% block content %}
+
+<form
+  action=""
+  method="post"
+  enctype="multipart/form-data"
+  ,
+  class="justify-content-center row list"
+>
+  {% csrf_token %} {% if error %}
+
+  <label
+    class="from-label col-12 alert alert-danger"
+    style="color: black !important"
+    >{{error}}</label
+  >
+  {% endif %}
+  <fieldset class="justify-content-center">
+    {% for i in user_form %}
+    <label
+      for="{{i.id_for_label}}"
+      class="from-label col-12"
+      style="color: black !important"
+      >{{i.label}}</label
+    >
+    {{i}} {% endfor %}
+  </fieldset>
+  <div class="row justify-content-center align-items-center g-2">
+    <button type="submit" class="btn btn-primary col-12">
+      Подтвердить изменения
+    </button>
+  </div>
+  <div class="row justify-content-center align-items-center g-2">
+    <a href="{% url 'exit' %}" class="btn btn-danger col-12" type="button"
+      >Выйти из профиля</a
+    >
+  </div>
+</form>
+
+{% endblock content %} 
+

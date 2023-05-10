@@ -1,0 +1,39 @@
+{% extends 'KODBURG/shablon_main.html' %}
+
+{% block title %}Создание поста{% endblock title %}
+{% block content %}
+<div class="row justify-content-center align-items-center g-2 text-center">
+    <h3>Форма создания поста</h3>
+</div>
+
+<form action="" method="post" enctype="multipart/form-data",  class="list justify-content-start row" >
+    {% csrf_token %}
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    
+    {% endif %}
+  <fieldset class="justify-content-start row">
+    <div class="row justify-content-start align-items-center p-3">
+        <label for="">Введите название статьи</label>
+        {{form.title}}
+    </div>
+    
+        <div class="row justify-content-start align-items-center p-3">
+            <label for="">Загрузите фото для статьи</label>
+            {{form.img}}
+        </div>
+    
+    <div class="row justify-content-start align-items-center p-3">
+        <label for="">Введите текст статьи</label>
+        {{form.text}}
+    </div>
+    <div class="row justify-content-start align-items-center p-3">
+        <button type="submit" class="btn btn-primary">Создать запись</button>
+    </div>
+</fieldset> 
+</form>
+
+{% endblock content %}
+

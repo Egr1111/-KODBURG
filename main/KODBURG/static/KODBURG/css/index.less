@@ -1,0 +1,475 @@
+@font-face {
+  font-family: "Tilda Sans";
+  src: url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.eot");
+  src: url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/30aaff8bab312adfd29944c9cfb18158.svg#Tilda Sans")
+      format("svg");
+}
+
+html {
+  width: 100vw;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  font-family: "Tilda Sans", sans-serif;
+  margin: 0;
+  background-color: #f2f2f2;
+}
+.welc {
+  position: absolute;
+  color: white;
+}
+h2,
+h3 {
+  font-weight: 900;
+}
+.card {
+  border: solid #f2f2f2 !important;
+  background-color: #f2f2f2 !important;
+  padding-bottom: 10vh;
+}
+
+img {
+  mix-blend-mode: multiply;
+  box-sizing: border-box;
+}
+.card-text {
+  height: 18em;
+  justify-content: center !important;
+}
+.card-img-top {
+  width: 12em;
+  height: 13em;
+}
+.from-label {
+  color: white !important;
+  font-size: large;
+}
+.input-class {
+  height: 3em;
+  text-align: center;
+
+  &.text {
+    text-align: start;
+    height: 10vh;
+  }
+}
+.img-100 {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  position: absolute;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.submit {
+  // opacity: .3;
+  border-radius: 60px;
+  background: rgba(55, 33, 15, 0.3);
+  border: solid rgba(55, 33, 15, 0.3) 1px;
+  height: 70px;
+  color: white;
+  font-size: larger;
+  margin-top: 20px;
+  transition: 0.5s;
+  &:hover {
+    background: rgba(83, 50, 24, 0.8);
+  }
+}
+
+.error{
+  & li{
+    color: red!important;
+    font-weight: 600;
+    list-style-type: none;
+  }
+}
+
+.header {
+  position: absolute !important;
+  z-index: 1;
+  flex-wrap: nowrap !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100vw;
+  & img {
+    z-index: 1;
+  }
+  & div {
+    color: white !important;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: white !important ;
+}
+
+.choice {
+  transition: 0.5s;
+  text-align: center;
+  padding: 0.3em;
+  align-self: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+.main-notmain {
+  padding-top: 0.5em;
+}
+.card-main {
+  background-color: white !important;
+  border-radius: 30px;
+  padding-bottom: 2vh;
+  & a {
+    color: black !important;
+  }
+}
+
+.title-card {
+  border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
+}
+.new_notice{
+  font-weight: 600;
+}
+
+.user-friend {
+  height: 3.5em;
+  border-radius: 30px;
+  transition: 0.5s;
+  background-color: white;
+  &:hover {
+    border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  &:active {
+    border-bottom: none;
+    transition: none;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  & img {
+    mix-blend-mode: normal;
+  }
+  &.col{
+    word-break: break-all;
+  }
+}
+.right-column,
+.left-column {
+  width: 29% !important;
+}
+
+.friend-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profil {
+  position: relative !important;
+  z-index: 1;
+  justify-content: end !important;
+  padding: 0;
+  margin: 0;
+  width: 20% !important;
+  flex-wrap: nowrap !important;
+
+  & img {
+    z-index: 1;
+  }
+  & div {
+    color: white !important;
+  }
+}
+.profil-icon {
+  position: relative !important;
+  z-index: 1;
+  justify-content: space-around !important;
+
+  & img {
+    z-index: 1;
+  }
+  & div {
+    color: white !important;
+  }
+}
+
+.header-main {
+  color: white !important;
+  background-color: #1e1e20;
+  border-radius: 10px;
+  transition: 0.5s;
+}
+.logo {
+  padding: 0;
+  margin: 0;
+}
+.burger {
+  display: none;
+  cursor: pointer;
+}
+
+.burger-choice {
+  height: 0;
+  width: 100%;
+  justify-content: center !important;
+  transition: 0.5s;
+  flex-direction: column !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  top: 5%;
+  visibility: hidden;
+
+  &.active {
+    height: 500px;
+    position: relative;
+    visibility: visible;
+    top: 0%;
+  }
+}
+.list {
+  background-color: white;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+.carousel-indicators li {
+  height: 15px !important;
+  width: 15px !important;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: solid rgba(0, 0, 0, 0.8) 5px !important;
+}
+
+.h3 {
+  background-color: #0f1011;
+  padding: 5px;
+  border-radius: 15px;
+  text-align: start;
+  // width: 40%;
+}
+
+.a_black {
+  color: black !important;
+}
+
+.a_like{
+  color: red!important;
+  &:hover{
+    color: white!important;
+  }
+}
+.a_dislike{
+  color: black!important;
+  &:hover{
+    color: white!important;
+  }
+}
+
+.project {
+  border: solid rgba(0, 0, 0, 0.3) 1px;
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 1em;
+  transition: 0.5s;
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  &:active {
+    transition: none;
+    background: white;
+    border-radius: solid white 1px;
+  }
+}
+
+.user-reach {
+  border: solid rgba(0, 0, 0, 0.3) 1px;
+  border-radius: 10px;
+  height: 8em;
+  color: black !important;
+  justify-content: center;
+  align-content: space-around;
+  transition: 0.5s;
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  &:active {
+    background: none;
+    border: none;
+  }
+  & img {
+    mix-blend-mode: normal;
+  }
+}
+
+.comm {
+  transition: 0.5s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  & img {
+    mix-blend-mode: normal;
+  }
+}
+.username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center !important;
+}
+.a_link{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat_log{
+  height: 75vh;
+  overflow-y: scroll;
+  flex-wrap: nowrap;
+}
+#chat_message{
+  min-height: 1vh!important;
+}
+.msg_to, .msg_from{
+  min-height: 60px;
+  background: rgba(0, 0, 0, 0.1);
+  align-items: center!important;
+  display: flex!important;
+  word-break: break-all;
+  border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
+  padding: 15px 10px;
+
+  &.read{
+    background-color: white;
+    // word-break:keep-all;
+  }
+}
+
+.img{
+  width: 45px;
+  display: flex!important;
+  align-items: start;
+  & img{
+    height: 45px;
+    border-radius: 50%;
+    width: 45px;
+  }
+}
+
+.msg_to{
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  text-align: start;
+}
+.msg_from{
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: end;
+
+}
+.new_mes{
+  background: rgba(255, 0, 0, 0.8);
+  width: 3px;
+  border-radius: 50%;
+}
+.chat{
+  background: rgba(255, 255, 255);
+  transition: .5s;
+  & img{
+    mix-blend-mode: normal;
+  }
+  &:hover{
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 992px) {
+  .img-100 {
+    width: 1500px !important;
+  }
+  .container {
+    max-width: 100vw;
+    width: 100vw;
+  }
+
+  .main-notmain .main {
+    padding: 0;
+    margin: 0;
+  }
+  .left-column,
+  .right-column {
+    display: none;
+  }
+  .menu {
+    display: none;
+  }
+  .burger {
+    display: flex;
+  }
+  .choice {
+    width: 100%;
+    height: 100%;
+    text-align: start !important;
+    padding: 10px;
+    border-bottom: solid rgba(255, 255, 255, 0.6) 1px;
+    align-content: center !important;
+  }
+  .header-main {
+    justify-content: center !important;
+    height: 0%;
+  }
+  .list {
+    padding: 1em 0 1em 0;
+  }
+  .profil-icon img {
+    width: 40px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100vw;
+    width: 100vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100vw;
+    width: 100vw;
+  }
+  .user-reach {
+    justify-content: space-around;
+    align-content: center;
+  }
+  .username {
+    align-self: center;
+    text-align: start !important;
+  }
+}
+
+// p {
+
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+// }

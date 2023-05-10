@@ -1,0 +1,126 @@
+{% extends 'KODBURG/shablon_main.html' %}
+
+{% block title %}Блог {{user.username}}{% endblock title %}
+
+{% block content %}
+
+
+
+
+{% if object_list %}
+    <div class="row justify-content-center align-items-center g-2">
+        <a href="{% url 'add_blog' %}" class="btn btn-success" type="button">Создать статью</a>
+    </div>
+    {% for i in object_list %}
+
+        <div class="row justify-content-center align-items-center list g-2" id="{{i.title}}">
+            <div class="row justify-content-center align-items-center ">
+                <h3 class="col-12 text-center">{{i.title}}</h3>
+                {% if i.img.url != "/media/User/blog/enter.png" %}
+                <img src="{{i.img.url}}" alt="">
+                {% endif %}
+                <div class="col-12 p-3">{{i.text}}</div>
+
+                <h6 class="col-12">{{i.date}}</h6>
+                <div class="col-12">{{i.username}}</div>
+                <div class="row justify-content-start align-items-center g-2">
+                    <div id="" class="btn btn-danger col-2" role="button">{{i.like.count}}</div>
+                    <div id="" class="btn btn-dark col-2" role="button">{{i.dislike.count}}</div>
+                </div>
+                <div class="row justify-content-center align-items-center g-2">
+                    <a name="" id="" class="btn btn-primary" href="{% url 'update_blog' i.username i.id %}" role="button">Изменить статью</a>
+                </div>
+                
+                <div class="row justify-content-center align-items-center g-2">
+                    <a name="" id="" class="btn btn-danger" href="{% url 'delete_blog' i.username i.id %}" role="button">Удалить статью</a>
+                </div>
+                
+            </div>
+            <form method="POST" class="row justify-content-center align-items-center border-top border-bottom m-3 g-2 " enctype="multipart/form-data">
+              <h4 class="col-12 align-self-center">Комментарии</h4>
+              {% csrf_token %}
+              <fieldset>
+                <select name="blog"  class="vTextField" maxlength="255" required="" style="visibility: hidden; display: none" id="id_blog">
+                  <option value="{{i.id}}"> {{i}} </option>
+                </select>
+
+                    {{form.image}}
+                    {{form.text}}
+                    <div class="row justify-content-center align-items-center g-2 m-2">
+                      <button type="submit" class="btn btn-success col-12">Отправить</button>
+                    </div>
+
+                  </fieldset>
+              </form>
+              <div class="row justify-content-center align-items-center g-2">
+
+                {% for item in comments %}
+                  {% if item.blog == i %}
+                    {% for User in Users %}
+                      {% if User == item.author %}
+                        {% if user != item.author %}
+                          <div class="row justify-content-center align-items-center comm border-bottom g-2">
+                            <div class="row justify-content-center align-items-center col-3 m-2 g-2">
+                              <a class="row col-12" href="{% url 'other_user' User.username User.id %}">
+                                <img src="{{User.image.url}}" alt="" class="col rounded-circle"/>
+                              </a>
+                            </div>
+                            <div class="row justify-content-center align-items-center col m-0 p-0 ">
+                              <div class="row align-self-center g-2">
+                                <a class="col text-decoration-underline a_black align-self-center" href="{% url 'other_user' User.username User.id %}">{{User.username}}</a>
+                                <div class="col">{{item.date}}</div>
+                              </div>
+                              <div class="row justify-content-center align-items-center m-3">
+                                <div class="col">{{item.text}}</div>
+                              </div>
+                            </div>
+                            {% if item.image != "img/enter.png" %}
+                              <div class="row justify-content-center align-items-center border g-2">
+                                <img src="{{item.image.url}}" alt="">
+                              </div>
+                            {% endif %}
+                          </div>
+                        {% else %}
+                          <a class="row justify-content-center align-items-center comm border-bottom g-2 a_black">
+                            <div class="row justify-content-center align-items-center col-3 m-2 g-2">
+                              <div class="row col-12" href="{% url 'other_user' User.username User.id %}">
+                                <img src="{{User.image.url}}" alt="" class="col rounded-circle"/>
+                              </div>
+                            </div>
+                            <div class="row justify-content-center align-items-center col m-0 p-0 ">
+                              <div class="row align-self-center g-2">
+                                <div class="col text-decoration-underline a_black align-self-center" href="{% url 'other_user' User.username User.id %}">{{User.username}}</div>
+                                <div class="col">{{item.date}}</div>
+                              </div>
+                              <div class="row justify-content-center align-items-center m-3">
+                                <div class="col">{{item.text}}</div>
+                              </div>
+                            </div>
+                            {% if item.image != "img/enter.png" %}
+                              <div class="row justify-content-center align-items-center border g-2">
+                                <img src="{{item.image.url}}" alt="">
+                              </div>
+                            {% endif %}
+                          </a>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+        </div>
+    {% endfor %}
+
+{% else %}
+<div class="row justify-content-center align-items-center text-center g-2">
+<h1 class="no_blog1">У вас пока нет записей</h1>
+</div>
+
+<div class="row justify-content-center align-items-center g-2">
+    <a href="{% url 'add_blog' %}" class="btn btn-success" type="button">Создать статью</a>
+</div>
+{% endif %}
+{% endblock content %}
+
+
+

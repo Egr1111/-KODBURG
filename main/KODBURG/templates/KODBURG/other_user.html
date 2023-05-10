@@ -1,0 +1,277 @@
+{% extends 'KODBURG/shablon_main.html' %} 
+{% load static %}
+{% block title %} 
+  Профиль {{other_user.username}}
+{% endblock title %} 
+{% block content %} 
+
+<div class="row justify-content-center align-items-center list">
+  {{other_user.id|json_script:"UserId"}}
+  {{other_user.image.url|json_script:"image_to"}}
+  {{other_user.username|json_script:"user_to"}}
+  {{connection.user_from|json_script:"con_user-from"}}
+  {{connection.user_to|json_script:"con_user-to"}}
+
+
+  <div
+
+    class="row justify-content-center align-items-center g-2 text-center"
+
+  >
+    {% csrf_token %}
+    <fieldset
+      class="row justify-content-center align-items-center g-2 text-center"
+    >
+      <img src="{{other_user.image.url}}" class="rounded-5 col-lg-3 col-5 border-dark" alt="" />
+      <div class="col-3">{{other_user.username}}</div>
+      <div class="row justify-content-center align-items-center col-lg-6 g-2">
+        {% if room_to %}
+        <a
+          name=""
+          id=""
+          class="btn btn-primary col-11 m-2"
+          href="{% url 'chat' user.id  other_user.id %}"
+          role="button"
+          >Написать сообщение</a
+        >
+        {% elif room_from %}
+          <a
+          name=""
+          id=""
+          class="btn btn-primary col-11 m-2"
+          href="{% url 'chat' other_user.id  user.id %}"
+          role="button"
+          >Написать сообщение</a
+        >
+        {% else %}
+        <a
+          name=""
+          id=""
+          class="btn btn-primary col-11 m-2"
+          href="{% url 'create_chat' user.id other_user.id %}"
+          role="button"
+          >Написать сообщение</a
+        >
+        {% endif %}
+        
+        {% if fri_reqFrom and fri_reqTo %}
+          <button
+            
+            name=""
+            id=""
+            class="btn btn-primary col-11 m-2 friend"
+          >
+            Удалить из друзей
+          </button>
+        {% elif fri_reqTo %}
+          
+              <button
+                
+                name=""
+                id=""
+                class="btn btn-primary col-11 m-2 friend"
+              >
+                Принять заявку
+              </button>
+        {% elif fri_reqFrom %}
+              <button
+                  
+                  name=""
+                  id=""
+                  class="btn btn-primary col-11 m-2 friend"
+                >
+                  Отписаться
+                </button>
+          
+        {% else %}
+                <button
+                  
+                  name=""
+                  id=""
+                  class="btn btn-primary col-11 m-2 friend"
+                >
+                  Добавить в друзья
+                </button>
+            
+        {% endif %}
+      </div>
+    </fieldset>
+  </div>
+</div>
+
+<div class="row justify-content-center align-items-center list g-2">
+  <h5 class="col-12">Дополнительная информация:</h5>
+  <div class="row justify-content-center align-items-center g-2">
+    <table class="row col-12">
+      <tr class="row border-bottom p-3">
+        <td>Имя:</td>
+        {% if other_user.first_name %}
+        <td>{{other_user.first_name}}</td>
+        {% else %}
+        <td>Мы не знаем его имени</td>
+        {% endif %}
+      </tr>
+      <tr class="row border-bottom p-3">
+        <td>Фамилия:</td>
+        {% if other_user.last_name %}
+        <td>{{other_user.last_name}}</td>
+        {% else %}
+        <td>Мы не знаем его фамилии</td>
+        {% endif %}
+      </tr>
+      <tr class="row border-bottom p-3">
+        <td>Немного о себе:</td>
+        {% if other_user.bio %}
+        <td style="overflow: hidden; text-overflow: ellipsis" class="col-12">
+          {{other_user.bio}}
+        </td>
+        {% else %}
+        <td>Он о себе нам не рассказывал</td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div
+  class="row justify-content-center align-items-center list border-bottom g-2"
+>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="home-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#home"
+        type="button"
+        role="tab"
+        aria-controls="Блог"
+        aria-selected="true"
+      >
+        Записи
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+        aria-controls="проекты"
+        aria-selected="false"
+      >
+        Проекты
+      </button>
+    </li>
+  </ul>
+</div>
+<div class="tab-content row justify-content-center">
+  <div
+    class="tab-pane justify-content-center active row"
+    id="home"
+    role="tabpanel"
+    aria-labelledby="home-tab"
+  >
+    {% for i in blog %}
+    <div
+      class="row justify-content-center align-items-center list trig-blog g-2" id="{{i.title}}"
+    >
+      <div class="row justify-content-center align-items-center">
+        <h3 class="col-12 text-center">{{i.title}}</h3>
+        {% if i.img.url != "/media/User/blog/enter.png" %}
+        <img src="{{i.img.url}}" alt="" />
+        {% endif %}
+        <div class="col-12 p-3">{{i.text}}</div>
+
+        <h6 class="col-12">{{i.date}}</h6>
+        <div class="col-12">{{i.username}}</div>
+        <div class="row justify-content-start align-items-center g-2">
+
+        
+        {% if user in i.like.all %}
+          <a id="" class="btn btn-danger col-2" href="{% url 'likeDelBlog' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+        {% else %}
+          <a id="" class="btn btn-outline-danger col-2 a_like" href="{% url 'likeIncBlog' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+
+        {% endif %}
+        {% if user in i.dislike.all %}
+          <a id="" class="btn btn-dark col-2" href="{% url 'dislikeDelBlog' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+        {% else %}
+          <a id="" class="btn btn-outline-dark col-2 a_dislike" href="{% url 'dislikeIncBlog' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+        {% endif %}
+      </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="row justify-content-center align-items-center text-center g-2">
+      <h1 class="no_blog">У данного пользователя нет записей</h1>
+    </div>
+    {% endfor %} 
+    
+
+  </div>
+
+  <div
+    class="tab-pane row"
+    id="profile"
+    role="tabpanel"
+    aria-labelledby="profile-tab"
+  >
+    {% if projects %} 
+    {% for i in projects %}
+    <div
+      class="row justify-content-center align-items-center list trig_project g-2" id="{{i.title}}"
+    >
+      <div class="row justify-content-center align-items-center">
+        <h3 class="col-12 text-center">{{i.title}}</h3>
+        {% if i.img.url != "/media/User/blog/enter.png" %}
+        <img src="{{i.img.url}}" alt="" />
+        {% endif %}
+        <div class="row col project">
+          <a
+            href="{{i.file.url}}"
+            class="col-12 link-project"
+            style="color: black !important"
+            >{{i.file.name}}</a
+          >
+        </div>
+        <div class="col-12 p-3">{{i.text}}</div>
+
+        <h6 class="col-12">{{i.date}}</h6>
+        <div class="col-12">{{i.username}}</div>
+        <div class="row justify-content-start align-items-center g-2">
+        {% if user in i.like.all %}
+          <a id="" class="btn btn-danger col-2" href="{% url 'likeDelProject' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+        {% else %}
+          <a id="" class="btn btn-outline-danger col-2 a_like" href="{% url 'likeIncProject' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+
+        {% endif %}
+        {% if user in i.dislike.all %}
+          <a id="" class="btn btn-dark col-2" href="{% url 'dislikeDelProject' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+        {% else %}
+          <a id="" class="btn btn-outline-dark col-2 a_dislike" href="{% url 'dislikeIncProject' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="row justify-content-center align-items-center text-center g-2">
+      <h1 class="no_project">У данного пользователя нет проектов</h1>
+    </div>
+
+    {% endif %}
+  </div>
+</div>
+
+<script src="{% static 'KODBURG/js/other_notice.js' %}"></script>
+{{other_user.id|json_script:"UserId"}}
+
+
+
+
+{% endblock content %}
+
+

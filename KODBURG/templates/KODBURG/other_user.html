@@ -25,6 +25,7 @@
       <img src="{{other_user.image.url}}" class="rounded-5 col-lg-3 col-5 border-dark" alt="" />
       <div class="col-3">{{other_user.username}}</div>
       <div class="row justify-content-center align-items-center col-lg-6 g-2">
+        {% if user != other_user %}
         {% if room_to %}
         <a
           name=""
@@ -93,6 +94,7 @@
                   Добавить в друзья
                 </button>
             
+        {% endif %}
         {% endif %}
       </div>
     </fieldset>

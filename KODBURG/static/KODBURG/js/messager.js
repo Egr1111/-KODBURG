@@ -138,10 +138,7 @@ total.addEventListener("message", function (event) {
 
         list[i].addEventListener("close", function (event) {
           console.log("Websocket disconnected...", event);
-          limit_time.innerHTML =
-            '<div class="alert alert-danger" role="alert"><strong>Время ожидания вышло! </strong><a href="' +
-            window.location +
-            '" class="alert-link">Пожалуйста, перезагрузите страницу</a></div>';
+          alert("Неожиданная ошибка! Перезагрузите страницу.");
         });
       }
     }
@@ -222,10 +219,7 @@ for (let i = 0; i < list.length; i++) {
 
   list[i].addEventListener("close", function (event) {
     console.log("Websocket disconnected...", event);
-    limit_time.innerHTML =
-      '<div class="alert alert-danger" role="alert"><strong>Время ожидания вышло!</strong><a href="' +
-      window.location +
-      '" class="alert-link">Пожалуйста, перезагрузите страницу</a></div>';
+    alert("Неожиданная ошибка! Перезагрузите страницу.");
   });
 }
 

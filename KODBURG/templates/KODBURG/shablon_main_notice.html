@@ -40,12 +40,11 @@
               class="row col-8 flex-row menu text-center justify-content-center flex-nowrap"
             >
               <a class="col choice" href="{% url 'main_blog' %}">Главная</a>
-              <a class="col choice" href="{% url 'reach' %}">Поиск</a>
+              <a class="col choice" href="{% url 'search' %}">Поиск</a>
               <a class="col choice" href="{% url 'messager' %}">Messager</a>
               <a class="col choice" href="{% url 'my_projects' %}"
                 >Мои проекты</a
               >
-              <a class="col choice" href="">Мои группы</a>
               <a class="col choice" href="{% url 'my_blog' %}">Мой блог</a>
               <a class="col choice" href="">Обучение</a>
             </div>
@@ -67,13 +66,14 @@
           </div>
           <div class="burger-choice row">
             <a class="col choice" href="{% url 'main_blog' %}">Главная</a>
-            <a class="col choice" href="{% url 'reach' %}">Поиск</a>
+            <a class="col choice" href="{% url 'search' %}">Поиск</a>
             <a class="col choice" href="{% url 'messager' %}">Messager</a>
             <a class="col choice" href="{% url 'my_projects' %}">Мои проекты</a>
-            <a class="col choice" href="">Мои группы</a>
             <a class="col choice" href="{% url 'my_blog' %}">Мой блог</a>
             <a class="col choice" href="">Обучение</a>
-            <a class="col choice" href="">Уведомления</a>
+            <a class="col choice" href="{% url 'my_notice' %}">Уведомления</a>
+            <a class="col choice" href="{% url 'my_friends' %}">Друзья</a>
+            <a class="col choice" href="{% url 'my_descriptions' %}">Подписки</a>
 
           </div>
         </div>

@@ -3,19 +3,18 @@
 
 {% block content %}
 <div class="row justify-content-center align-items-center g-2 list">
-  <form action="" method="post" class="row justify-content-between">
-    <h5 class="col">Введите ник пользователя или название группы</h5>
-    <input type="text" class="p-2" style="margin-bottom: 1em !important" />
-    <button type="submit" class="btn btn-primary">Найти</button>
+  <form action="" method="post" class="row justify-content-between text-center">
+    <h5 class="col">Введите ник пользователя</h5>
+    <input type="text" class="p-2 user-input" style="margin-bottom: 1em !important" />
   </form>
   {% comment %} <div class="row justify-content-center align-items-center g-2">
     <h4 class="col-12">Существующие группы</h4>
   </div> {% endcomment %}
   <div class="row justify-content-center align-items-center g-2">
     <h4 class="col-12">Существующие пользователи:</h4>
-    <div class="col-12 row justify-content-around">
+    <div class="col-12 row justify-content-around all-users">
       {% for i in object_list %}
-      {% if i.username != user.username%} 
+      {% if i.username != user.username %} 
       <a
         class="col-lg-4 col-sm-2 col-12 row user-reach  p-2"
         href="{% url 'other_user' i.username i.id %}"
@@ -23,7 +22,9 @@
         <img src="{{i.image.url}}" class="col-sm-10 col-3" alt="user"/>
         <div class="col-sm-12 col username p-0">{{i.username}}</div>
       </a>
-      {% endif %} {% endfor %}
+      {% endif %}
+      
+      {% endfor %}
     </div>
   </div>
 </div>

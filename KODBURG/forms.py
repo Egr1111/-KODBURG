@@ -99,7 +99,7 @@ class UserForm(ModelForm):
     def clean(self):
         cleaned_data = super(UserForm, self).clean()
         username = cleaned_data.get('username')
-        num = [f"{i}" for i in range(9)]
+        num = [f"{i}" for i in range(0, 10)]
         sim = ["@", "+", "-", "_" ] + num
         for i in username:
             if not i.isalpha() and i not in sim:
@@ -124,17 +124,7 @@ class Blog_form(ModelForm):
             })
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     self._user = kwargs.pop('user')
-    #     super(Blog_form, self).__init__(*args, **kwargs)
 
-    # def save(self, commit=True):
-    #     inst = super(Blog_form, self).save(commit=False)
-    #     inst.username = self._user
-    #     if commit:
-    #         inst.save()
-    #         self.save_m2m()
-    #     return inst
 
 
 class Project_form(ModelForm):
@@ -147,6 +137,7 @@ class Project_form(ModelForm):
                 "placeholder": "Название поста"
             }),
             "text": Textarea(attrs={
+                "style": "overflow: hidden;",
                 "class": "col-12",
             }),
             "img": FileInput(attrs={

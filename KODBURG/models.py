@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_save
-from django.utils.safestring import mark_safe 
-from django.dispatch import receiver
-from django.core.validators import RegexValidator
+
 
 
 class User(AbstractUser):
@@ -14,6 +11,7 @@ class User(AbstractUser):
     descriptions = models.ManyToManyField("User", blank=True, related_name="Descriptions")
     chats = models.ManyToManyField("Room", blank=True)
     connections = models.ManyToManyField("Requests", blank=True, related_name="connections")
+    new_messages = models.BooleanField(blank=True, default=False)
 
     
 
@@ -49,9 +47,9 @@ class Project_list(models.Model):
 
 class Notice(models.Model):
     usernameFrom = models.ForeignKey(
-        User, related_name="usernameFrom", on_delete=models.PROTECT, null=True, blank=True)
+        User, related_name="usernameFrom", on_delete=models.CASCADE, null=True, blank=True)
     usernameTo = models.ForeignKey(
-        User, related_name="usernameTo", on_delete=models.PROTECT, null=True, blank=True)
+        User, related_name="usernameTo", on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to="User/photo", default="img/enter.png")
     text = models.TextField()
     read = models.BooleanField(default=False)
@@ -101,7 +99,7 @@ class Room(models.Model):
 
 class Messages(models.Model):
     user_from = models.ForeignKey(
-        User, on_delete=models.PROTECT, null=True, blank=True, related_name="user_from")
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name="user_from")
     message = models.CharField(max_length=255)
     viewed = models.BooleanField(default=False)
     time_send = models.DateTimeField(auto_now=True)

@@ -12,19 +12,41 @@ let no_other_blog = document.querySelectorAll(".trig-blog");
 let no_other_projects = document.querySelectorAll(".trig_project");
 let textarea = document.querySelector("textarea");
 let notice = document.querySelector(".notice");
+let notice_box = document.querySelector(".right-column");
 let friends = document.querySelector(".friends");
 let descriptions = document.querySelector(".descr");
+let other_box = document.querySelector(".left-column");
 let image_from = JSON.parse(document.getElementById("image_from").textContent);
 let from_user = JSON.parse(document.getElementById("user_from").textContent);
 let my_id = JSON.parse(document.getElementById("my-id").textContent);
 let connected = document.querySelectorAll(".connect");
 let messaged = document.querySelectorAll(".chat");
 let choices = document.querySelectorAll(".choice");
+let like = document.querySelectorAll(".like");
+let dislike = document.querySelectorAll(".dislike");
+let header = document.querySelector(".header-main");
+let input_user = document.querySelector(".user-input")
+let users = document.querySelectorAll(".user-reach")
+let all_users = document.querySelector(".all-users")
+let window_check = window.pageYOffset;
+let box_top = window_check + "";
 
 let my_clients = [];
 let clients = [];
 let my_chats = [];
 let chats = [];
+
+notice_box.style.top = box_top + "px";
+other_box.style.top = box_top + "px";
+
+document.addEventListener("scroll", function () {
+  let window_check = window.pageYOffset;
+  let box_top = window_check + "";
+
+  console.log(window_check, box_top);
+  notice_box.style.top = box_top + "px";
+  other_box.style.top = box_top + "px";
+});
 
 function Connections() {
   for (let i = 0; i < my_clients.length; i++) {
@@ -476,11 +498,36 @@ my_total.addEventListener("open", function (event) {
   console.log("My websocket connect...", event);
 });
 
-my_total.addEventListener("message", function func(event) {
+my_total.addEventListener("message", function(event) {
   console.log("My websocket get message...", event);
   let new_event = JSON.parse(event.data);
   let type = new_event["type"];
+  if (type == "results_search"){
+    let results = new_event["results"]
+    if (results != {}){
+      all_users.innerHTML = ""
+      for (let [key, value] of Object.entries(results)) {
+        let user = document.createElement("a")
+        let user_img = document.createElement("img")
+        let user_username = document.createElement("div");
+        
 
+        user.href = "/main/" + value[0] + "/" + key + "/viewing/"
+        user.className = "col-lg-4 col-sm-2 col-12 row user-reach p-2"
+
+        user_img.src = "http://" + window.location.host + "/media/" + value[1];
+        user_img.className = "col-sm-10 col-3"
+
+        user_username.className = "col-sm-12 col username"
+        user_username.innerHTML = value[0]
+
+        user.append(user_img)
+        user.append(user_username);
+
+        all_users.prepend(user)
+      }
+    }
+  }
   if (type == "new_client") {
     let bool = false;
     if (
@@ -581,10 +628,84 @@ my_total.addEventListener("error", function (event) {
 
 my_total.addEventListener("close", function (event) {
   console.log("My websocket disconnect...", event);
+  alert("Неожиданная ошибка! Перезагрузите страницу!");
 });
 
-function burger_open_close() {
+
+burger_button.addEventListener("click", function () {
   burger_menu.toggle("active");
+});
+
+for (let i = 0; i < like.length; i++) {
+  like[i].addEventListener("click", function () {
+    my_total.send(
+      JSON.stringify({
+        id: like[i].id,
+        type_post: like[i].name,
+        type: "like",
+      })
+    );
+    if (like[i].classList.contains("a_like")) {
+      like[i].classList.remove("a_like");
+      like[i].classList.remove("btn-outline-danger");
+      like[i].classList.add("btn-danger");
+
+      like[i].textContent = parseInt(like[i].textContent) + 1;
+    } else {
+      like[i].classList.add("a_like");
+      like[i].classList.add("btn-outline-danger");
+      like[i].classList.remove("btn-danger");
+      if (parseInt(like[i].textContent) > 0)
+        like[i].textContent = parseInt(like[i].textContent) - 1;
+    }
+    if (!dislike[i].classList.contains("a_dislike")) {
+      dislike[i].classList.add("a_dislike");
+      dislike[i].classList.add("btn-outline-dark");
+      dislike[i].classList.remove("btn-dark");
+      if (parseInt(dislike[i].textContent) > 0)
+        dislike[i].textContent = parseInt(dislike[i].textContent) - 1;
+    }
+  });
 }
 
-burger_button.addEventListener("click", burger_open_close);
+for (let i = 0; i < dislike.length; i++) {
+  dislike[i].addEventListener("click", function () {
+    console.log(dislike[i].attributes["id"]);
+    my_total.send(
+      JSON.stringify({
+        id: dislike[i].id,
+        type_post: dislike[i].name,
+        type: "dislike",
+      })
+    );
+    if (dislike[i].classList.contains("a_dislike")) {
+      dislike[i].classList.remove("a_dislike");
+      dislike[i].classList.remove("btn-outline-dark");
+      dislike[i].classList.add("btn-dark");
+      dislike[i].textContent = parseInt(dislike[i].textContent) + 1;
+    } else {
+      dislike[i].classList.add("a_dislike");
+      dislike[i].classList.add("btn-outline-dark");
+      dislike[i].classList.remove("btn-dark");
+
+      if (parseInt(dislike[i].textContent) > 0)
+        dislike[i].textContent = parseInt(dislike[i].textContent) - 1;
+    }
+
+    if (!like[i].classList.contains("a_like")) {
+      like[i].classList.add("a_like");
+      like[i].classList.add("btn-outline-danger");
+      like[i].classList.remove("btn-danger");
+
+      like[i].textContent = parseInt(like[i].textContent) - 1;
+    }
+  });
+}
+
+input_user.addEventListener("input", function () {
+  all_users.innerHTML = ""
+  my_total.send(JSON.stringify({
+    text: input_user.value,
+    type: "search"
+  }))
+})

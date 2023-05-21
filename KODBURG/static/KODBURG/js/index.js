@@ -342,10 +342,9 @@
   observer.observe(top_1);
 })();
 
-
-
+document.querySelectorAll("label").forEach((i) =>
 (function () {
-  var top_1 = document.querySelectorAll("label")[0];
+  var top_1 = document.querySelectorAll("label")[i.indexOf()];
 
   var observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -363,69 +362,72 @@
     });
   });
   observer.observe(top_1);
-})();
+})
+)
 
-(function () {
-  var top_1 = document.querySelectorAll("label")[1];
 
-  var observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (
-        typeof getCurrentAnimationPreference === "function" &&
-        !getCurrentAnimationPreference()
-      ) {
-        return;
-      }
 
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate__animated");
-        entry.target.classList.add("animate__zoomIn");
-      }
-    });
-  });
-  observer.observe(top_1);
-})();
+// (function () {
+//   var top_1 = document.querySelectorAll("label")[1];
 
-(function () {
-  var top_1 = document.querySelectorAll("label")[2];
+//   var observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) => {
+//       if (
+//         typeof getCurrentAnimationPreference === "function" &&
+//         !getCurrentAnimationPreference()
+//       ) {
+//         return;
+//       }
 
-  var observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (
-        typeof getCurrentAnimationPreference === "function" &&
-        !getCurrentAnimationPreference()
-      ) {
-        return;
-      }
+//       if (entry.isIntersecting) {
+//         entry.target.classList.add("animate__animated");
+//         entry.target.classList.add("animate__zoomIn");
+//       }
+//     });
+//   });
+//   observer.observe(top_1);
+// })();
 
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate__animated");
-        entry.target.classList.add("animate__zoomIn");
-      }
-    });
-  });
-  observer.observe(top_1);
-})();
+// (function () {
+//   var top_1 = document.querySelectorAll("label")[2];
 
-(function () {
-  var top_1 = document.querySelectorAll("label")[3];
+//   var observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) => {
+//       if (
+//         typeof getCurrentAnimationPreference === "function" &&
+//         !getCurrentAnimationPreference()
+//       ) {
+//         return;
+//       }
 
-  var observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (
-        typeof getCurrentAnimationPreference === "function" &&
-        !getCurrentAnimationPreference()
-      ) {
-        return;
-      }
+//       if (entry.isIntersecting) {
+//         entry.target.classList.add("animate__animated");
+//         entry.target.classList.add("animate__zoomIn");
+//       }
+//     });
+//   });
+//   observer.observe(top_1);
+// })();
 
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate__animated");
-        entry.target.classList.add("animate__fadeInUp");
-      }
-    });
-  });
-  observer.observe(top_1);
-})();
+// (function () {
+//   var top_1 = document.querySelectorAll("label")[3];
+
+//   var observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) => {
+//       if (
+//         typeof getCurrentAnimationPreference === "function" &&
+//         !getCurrentAnimationPreference()
+//       ) {
+//         return;
+//       }
+
+//       if (entry.isIntersecting) {
+//         entry.target.classList.add("animate__animated");
+//         entry.target.classList.add("animate__fadeInUp");
+//       }
+//     });
+//   });
+//   observer.observe(top_1);
+// })();
 
 

@@ -122,7 +122,7 @@
       <tr class="row border-bottom p-3">
         <td>Немного о себе:</td>
         {% if other_user.bio %}
-        <td style="overflow: hidden; text-overflow: ellipsis" class="col-12">
+        <td style="word-break: break-all;">
           {{other_user.bio}}
         </td>
         {% else %}
@@ -176,34 +176,45 @@
     aria-labelledby="home-tab"
   >
     {% for i in blog %}
-    <div
-      class="row justify-content-center align-items-center list trig-blog g-2" id="{{i.title}}"
-    >
+    <div class="row justify-content-center align-items-center list g-2" id="{{i.id}}">
       <div class="row justify-content-center align-items-center">
         <h3 class="col-12 text-center">{{i.title}}</h3>
         {% if i.img.url != "/media/User/blog/enter.png" %}
         <img src="{{i.img.url}}" alt="" />
         {% endif %}
-        <div class="col-12 p-3">{{i.text}}</div>
+        <div class="col-12 p-3" style="word-break: break-all;">{{i.text}}</div>
 
         <h6 class="col-12">{{i.date}}</h6>
-        <div class="col-12">{{i.username}}</div>
-        <div class="row justify-content-start align-items-center g-2">
-
         
-        {% if user in i.like.all %}
-          <a id="" class="btn btn-danger col-2" href="{% url 'likeDelBlog' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+        <a
+          name=""
+          id=""
+          class="a_black text-decoration-underline"
+          href="{% url 'other_user' i.username.username i.username.id %}"
+          role="button"
+          >{{i.username.username}}</a
+        >
+        <div class="row justify-content-start align-items-center g-2">
+        {% if user != i.username %}
+          {% if user in i.like.all %}
+            <a id="{{i.id}}" name="blog" class="btn btn-danger col-2 like" role="button">{{i.like.count}}</a>
+          {% else %}
+            <a id="{{i.id}}" name="blog" class="btn btn-outline-danger col-2 a_like like" role="button">{{i.like.count}}</a>
+          {% endif %}
+            {% if user in i.dislike.all %}
+              <a id="{{i.id}}" name="blog" class="btn btn-dark col-2" role="button dislike">{{i.dislike.count}}</a>
+            {% else %}
+              <a id="{{i.id}}" name="blog" class="btn btn-outline-dark col-2 a_dislike dislike" role="button">{{i.dislike.count}}</a>
+          {% endif %}
         {% else %}
-          <a id="" class="btn btn-outline-danger col-2 a_like" href="{% url 'likeIncBlog' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
-
-        {% endif %}
-        {% if user in i.dislike.all %}
-          <a id="" class="btn btn-dark col-2" href="{% url 'dislikeDelBlog' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
-        {% else %}
-          <a id="" class="btn btn-outline-dark col-2 a_dislike" href="{% url 'dislikeIncBlog' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+          <div class="row justify-content-start align-items-center g-2">
+            <div id="" class="btn btn-danger col-2" role="button">{{i.like.count}}</div>
+            <div id="" class="btn btn-dark col-2" role="button">{{i.dislike.count}}</div>
+          </div>
         {% endif %}
       </div>
       </div>
+      <a name="" id="" class="btn btn-primary" href="{% url 'blog_details' i.id %}" role="button">Оставить комментарий</a>
     </div>
     {% empty %}
     <div class="row justify-content-center align-items-center text-center g-2">
@@ -222,13 +233,13 @@
   >
     {% if projects %} 
     {% for i in projects %}
-    <div
-      class="row justify-content-center align-items-center list trig_project g-2" id="{{i.title}}"
-    >
+    <div class="row justify-content-center align-items-center list g-2" id="{{i.id}}">
       <div class="row justify-content-center align-items-center">
-        <h3 class="col-12 text-center">{{i.title}}</h3>
+        
+          <h3 class="col-12 text-center">{{i.title}}</h3>
+        
         {% if i.img.url != "/media/User/blog/enter.png" %}
-        <img src="{{i.img.url}}" alt="" />
+        <img src="{{i.img.url}}" alt="" class="col-12" />
         {% endif %}
         <div class="row col project">
           <a
@@ -238,24 +249,37 @@
             >{{i.file.name}}</a
           >
         </div>
-        <div class="col-12 p-3">{{i.text}}</div>
 
+        <div class="col-12 p-3" style="word-break: break-all;">{{i.text}}</div>
+        
         <h6 class="col-12">{{i.date}}</h6>
-        <div class="col-12">{{i.username}}</div>
+        
+        <a class="col-12 a_black text-decoration-underline" href="{% url 'other_user' i.username.username i.username.id %}" >{{i.username.username}}</a>
+            
         <div class="row justify-content-start align-items-center g-2">
-        {% if user in i.like.all %}
-          <a id="" class="btn btn-danger col-2" href="{% url 'likeDelProject' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
+        {% if user != i.username %}
+          {% if user in i.like.all %}
+            <a id = "{{i.id}}" name="project" class="btn btn-danger col-2 like" role="button">{{i.like.count}}</a>
+          {% else %}
+            <a id = "{{i.id}}" name="project" class="btn btn-outline-danger col-2 a_like like"  role="button">{{i.like.count}}</a>
+          {% endif %}
+          {% if user in i.dislike.all %}
+            <a id = "{{i.id}}" name="project" class="btn btn-dark col-2 dislike" role="button">{{i.dislike.count}}</a>
+          {% else %}
+            <a id = "{{i.id}}" name="project" class="btn btn-outline-dark col-2 a_dislike dislike" role="button">{{i.dislike.count}}</a>
+          {% endif %}
         {% else %}
-          <a id="" class="btn btn-outline-danger col-2 a_like" href="{% url 'likeIncProject' i.id %}#{{i.title}}" role="button">{{i.like.count}}</a>
-
-        {% endif %}
-        {% if user in i.dislike.all %}
-          <a id="" class="btn btn-dark col-2" href="{% url 'dislikeDelProject' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
-        {% else %}
-          <a id="" class="btn btn-outline-dark col-2 a_dislike" href="{% url 'dislikeIncProject' i.id %}#{{i.title}}" role="button">{{i.dislike.count}}</a>
+          <div class="row justify-content-start align-items-center g-2">
+            <div id="" class="btn btn-danger col-2" role="button">{{i.like.count}}</div>
+            <div id="" class="btn btn-dark col-2" role="button">{{i.dislike.count}}</div>
+          </div>
         {% endif %}
         </div>
       </div>
+      <a name="" id="" class="btn btn-primary" href="{% url 'project_details' i.id %}" role="button">Оставить комментарий</a>
+
+
+      
     </div>
     {% endfor %} {% else %}
     <div class="row justify-content-center align-items-center text-center g-2">

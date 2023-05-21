@@ -13,19 +13,22 @@
 
 <div class="row justify-content-center align-items-center list g-2">
     <div class="row justify-content-center align-items-center  ">
-        <h3 class="col-12 text-center">{{i.title}}</h3>
+        <h3 class="col-12 text-center" style="word-break: break-all;">{{i.title}}</h3>
 
         {% if i.img.url != "/media/User/blog/enter.png" %}
         <img src="{{i.img.url}}" alt="" class="col-12">
         {% endif %}
         <div class="row col project">
             <a href="{{i.file.url}}" class="col-12 link-project" style = "color: black!important">{{i.file.name}}</a>
-            
         </div>
-        <div class="col-12 p-3">{{i.text}}</div>
+        <div class="col-12 p-3" style="word-break: break-all;">{{i.text}}</div>
 
         <h6 class="col-12">{{i.date}}</h6>
         <div class="col-12">{{i.username}}</div>
+        <div class="row justify-content-start align-items-center g-2">
+          <div id="" class="btn btn-danger col-2" role="button">{{i.like.count}}</div>
+          <div id="" class="btn btn-dark col-2" role="button">{{i.dislike.count}}</div>
+        </div>
         <div class="row justify-content-center align-items-center g-2">
             <a name="" id="" class="btn btn-primary" href="{% url 'update_project' i.username i.id %}" role="button">Изменить проект</a>
         </div>
@@ -33,81 +36,10 @@
         <div class="row justify-content-center align-items-center g-2">
             <a name="" id="" class="btn btn-danger" href="{% url 'delete_project' i.username i.id %}" role="button">Удалить проект</a>
         </div>
-
-    </div>
-    
-    <form method="POST" class="row justify-content-center align-items-center border-top border-bottom m-3 g-2 " enctype="multipart/form-data">
-      <h4 class="col-12 align-self-center">Оставьте свой комментарий</h4>
-      {% csrf_token %}
-      <fieldset>
-        
-        <select name="project" class="vTextField" maxlength="255" required="" style="visibility: hidden; display: none" id="id_project">
-          <option value="{{i.id}}"> {{i}} </option>
-        </select>        
-        {{form.image}}
-        {{form.text}}
-        <div class="row justify-content-center align-items-center g-2 m-2">
-          <button type="submit" class="btn btn-success col-12">Отправить</button>
+        <div class="row justify-content-center align-items-center g-2">
+          <a name="" id="" class="btn btn-primary" href="{% url 'project_details' i.id %}" role="button">Оставить комментарий</a>
         </div>
 
-    </fieldset>
-    </form>
-
-    <div class="row justify-content-center align-items-center g-2">
-
-        {% for item in comments %}
-          {% if item.project == i %}
-          {% for User in Users %}
-          {% if User == item.author %}
-            {% if user != item.author %}
-                          <div class="row justify-content-center align-items-center comm border-bottom g-2" >
-                            <div class="row justify-content-center align-items-center col-3 m-2 g-2">
-                              <a class="row col-12" href="{% url 'other_user' User.username User.id %}">
-                                <img src="{{User.image.url}}" alt="" class="col rounded-circle"/>
-                              </a>
-                            </div>
-                            <div class="row justify-content-center align-items-center col m-0 p-0 ">
-                              <div class="row align-self-center g-2">
-                                <a class="col text-decoration-underline a_black align-self-center" href="{% url 'other_user' User.username User.id %}">{{User.username}}</a>
-                                <div class="col">{{item.date}}</div>
-                              </div>
-                              <div class="row justify-content-center align-items-center m-3">
-                                <div class="col">{{item.text}}</div>
-                              </div>
-                            </div>
-                            {% if item.image != "img/enter.png" %}
-                              <div class="row justify-content-center align-items-center border g-2">
-                                <img src="{{item.image.url}}" alt="">
-                              </div>
-                            {% endif %}
-                          </div>
-                        {% else %}
-                          <a class="row justify-content-center align-items-center comm border-bottom g-2 a_black" href="#">
-                            <div class="row justify-content-center align-items-center col-3 m-2 g-2">
-                              <div class="row col-12" href="{% url 'other_user' User.username User.id %}">
-                                <img src="{{User.image.url}}" alt="" class="col rounded-circle"/>
-                              </div>
-                            </div>
-                            <div class="row justify-content-center align-items-center col m-0 p-0 ">
-                              <div class="row align-self-center g-2">
-                                <div class="col text-decoration-underline a_black align-self-center" href="{% url 'other_user' User.username User.id %}">{{User.username}}</div>
-                                <div class="col">{{item.date}}</div>
-                              </div>
-                              <div class="row justify-content-center align-items-center m-3">
-                                <div class="col">{{item.text}}</div>
-                              </div>
-                            </div>
-                            {% if item.image != "img/enter.png" %}
-                              <div class="row justify-content-center align-items-center border g-2">
-                                <img src="{{item.image.url}}" alt="">
-                              </div>
-                            {% endif %}
-                          </a>
-                        {% endif %}
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-        {% endfor %}
     </div>
 </div>
 

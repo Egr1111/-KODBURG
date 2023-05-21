@@ -10,7 +10,7 @@ from django.views.generic import (
     CreateView,
 )
 
-# from django.contrib.auth.models import User
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
 from django.contrib.auth.decorators import login_required
@@ -24,9 +24,6 @@ from django.urls import reverse
 from django.db.models import Count
 
 
-# Create your views here
-
-
 class Welcome(CreateView):
     form_class = UserCreateForm
     template_name = "KODBURG/welcome.html"
@@ -37,33 +34,17 @@ class Welcome(CreateView):
         context["object_list"] = Post.objects.all()
         return context
 
-    # def form_valid(self, form):
-    #     user = form.save()
-    #     login(self.request, user)
-    #     return redirect("main_blog")
-
-    # def form_invalid(self, form):
-    #     error = "Форма заполнена неправильно!"
-    #     return render(self.request, "KODBURG/welcome.html", {"object_list": Post.objects.all(), "error": error})
-
-
-# def welcome(request):
-#     model = Post.objects.all()
-#     form_class = UserCreateForm
-
 
 class Enter(LoginView):
     template_name = "KODBURG/enter.html"
     form_class = UserLoginForm
-    success_url = "/kodburg/main_blog"
+    success_url = "/main_blog"
 
 
 def main_blog(request):
     form_blog = Comments_to_blog()
-    
     if request.method == "POST":
         form_blog = Comments_to_blog(request.POST, request.FILES)
-
         if form_blog.is_valid():
             form_blog = form_blog.save(commit=False)
             form_blog.author = request.user
@@ -78,63 +59,6 @@ def main_blog(request):
             "form_blog": form_blog,
         },
     )
-
-
-def IncreaseCounterBlog(request, pk):
-    if request.user in Blog_list.objects.get(id=pk).dislike.all():
-        Blog_list.objects.get(id=pk).like.add(request.user)
-        Blog_list.objects.get(id=pk).dislike.remove(request.user)
-    else:
-        Blog_list.objects.get(id=pk).like.add(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def DownCounterBlog(request, pk):
-    Blog_list.objects.get(id=pk).like.remove(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def IncreaseCounterDisBlog(request, pk):
-    if request.user in Blog_list.objects.get(id=pk).like.all():
-        Blog_list.objects.get(id=pk).dislike.add(request.user)
-        Blog_list.objects.get(id=pk).like.remove(request.user)
-    else:
-        Blog_list.objects.get(id=pk).dislike.add(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def DownCounterDisBlog(request, pk):
-    Blog_list.objects.get(id=pk).dislike.remove(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def IncreaseCounterProject(request, pk):
-    if request.user in Project_list.objects.get(id=pk).dislike.all():
-        Project_list.objects.get(id=pk).like.add(request.user)
-        Project_list.objects.get(id=pk).dislike.remove(request.user)
-    else:
-        Project_list.objects.get(id=pk).like.add(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def DownCounterProject(request, pk):
-    Project_list.objects.get(id=pk).like.remove(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def IncreaseCounterDisProject(request, pk):
-    if request.user in Project_list.objects.get(id=pk).like.all():
-        Project_list.objects.get(id=pk).dislike.add(request.user)
-        Project_list.objects.get(id=pk).like.remove(request.user)
-    else:
-        Project_list.objects.get(id=pk).dislike.add(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def DownCounterDisProject(request, pk):
-    Project_list.objects.get(id=pk).dislike.remove(request.user)
-    return redirect(request.META.get("HTTP_REFERER"))
-
 
 def main_project(request):
     form_project = Comments_to_projects()
@@ -157,22 +81,53 @@ def main_project(request):
         },
     )
 
+def blog_details(request, id):
+    if len(Blog_list.objects.filter(id = id)) == 0:
+        return redirect(request.META.get('HTTP_REFERER'))
+    blog = Blog_list.objects.get(id = id)
+    comments = Comment_blog.objects.filter(blog = blog)
+    print(comments)
+    comments_form = Comments_to_blog()
+    
+    if request.method == "POST":
+        comments_form = Comments_to_blog(request.POST, request.FILES)
+        if comments_form.is_valid():
+            comments_form = comments_form.save(commit=False)
+            comments_form.author = request.user
+            comments_form.save()
+            return redirect("blog_details", id)
+    return render(request, "KODBURG/blog_details.html", {"i": blog, "comments_blog": comments, "form_blog": comments_form})
+
+def project_details(request, id):
+    if len(Project_list.objects.filter(id = id)) == 0:
+        return redirect(request.META.get('HTTP_REFERER'))
+    project = Project_list.objects.get(id = id)
+    comments = Comment_project.objects.filter(project = project)
+    comments_form = Comments_to_projects()
+    if request.method == "POST":
+        comments_form = Comments_to_projects(request.POST, request.FILES)
+        if comments_form.is_valid():
+            comments_form = comments_form.save(commit=False)
+            comments_form.author = request.user
+            comments_form.save()
+            return redirect("project_details", id)
+    return render(request, "KODBURG/project_details.html", {"i": project, "comments_project": comments, "form_project": comments_form})
+
 
 class My_friends(TemplateView):
     template_name = "KODBURG/my_friends.html"
 
-    def get(self, request, *args, **kwargs):
-        return render(request, "KODBURG/my_friends.html", {})
-
 
 class My_notice(TemplateView):
     template_name = "KODBURG/my_notice.html"
+    
+class My_descriptions(TemplateView):
+    template_name = "KODBURG/my_descriptions.html"
 
 
 @login_required
 def update_profile(request):
     error = ""
-
     if request.method == "POST":
         user_form = UserForm(request.POST, request.FILES, instance=request.user)
         if user_form.is_valid():
@@ -345,7 +300,7 @@ class Delete_project(DeleteView):
     model = Project_list
     context_object_name = "Project_list"
     template_name = "KODBURG/delete_project.html"
-    success_url = "/kodburg/main/my_projects"
+    success_url = "/main/my_projects"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -359,9 +314,9 @@ class Delete_project(DeleteView):
         return context
 
 
-class Reach(ListView):
+class Search(ListView):
     model = User
-    template_name = "KODBURG/reach.html"
+    template_name = "KODBURG/search.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -499,9 +454,9 @@ def create_chat(request, user_from, user_to):
     user1 = User.objects.get(pk=user_from)
     user2 = User.objects.get(pk=user_to)
     if Room.objects.filter(title=f"{user1.username}.{user2.username}"):
-        return redirect(f"/kodburg/main/chat/{user_from}{user_to}/")
+        return redirect(f"/main/chat/{user_from}{user_to}/")
     elif Room.objects.filter(title=f"{user2.username}.{user1.username}"):
-        return redirect(f"/kodburg/main/chat/{user_to}{user_from}/")
+        return redirect(f"/main/chat/{user_to}{user_from}/")
     else:
         Room.objects.create(title=f"{user1.username}.{user2.username}")
         new_room = Room.objects.get(title=f"{user1.username}.{user2.username}")
@@ -509,7 +464,7 @@ def create_chat(request, user_from, user_to):
         user1.chats.add(new_room)
         user2.chats.add(new_room)
 
-        return redirect(f"/kodburg/main/chat/{user_from}{user_to}/")
+        return redirect(f"/main/chat/{user_from}{user_to}/")
 
 
 def messager(request):

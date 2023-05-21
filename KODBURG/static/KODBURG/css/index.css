@@ -73,7 +73,7 @@ img {
   background: rgba(83, 50, 24, 0.8);
 }
 .error li {
-  color: red!important;
+  color: red !important;
   font-weight: 600;
   list-style-type: none;
 }
@@ -151,6 +151,9 @@ a {
 .right-column,
 .left-column {
   width: 29% !important;
+  position: relative!important;
+  top: 0;
+  z-index: 100;
 }
 .friend-name {
   white-space: nowrap;
@@ -188,6 +191,12 @@ a {
   background-color: #1e1e20;
   border-radius: 10px;
   transition: 0.5s;
+  z-index: 1000;
+}
+.hed {
+  position: sticky !important;
+  top: 0;
+  z-index: 100;
 }
 .logo {
   padding: 0;
@@ -206,6 +215,7 @@ a {
   padding: 0 !important;
   margin: 0 !important;
   top: 5%;
+  display: none;
   visibility: hidden;
 }
 .burger-choice.active {
@@ -236,16 +246,16 @@ a {
   color: black !important;
 }
 .a_like {
-  color: red!important;
+  color: red !important;
 }
 .a_like:hover {
-  color: white!important;
+  color: white !important;
 }
 .a_dislike {
-  color: black!important;
+  color: black !important;
 }
 .a_dislike:hover {
-  color: white!important;
+  color: white !important;
 }
 .project {
   border: solid rgba(0, 0, 0, 0.3) 1px;
@@ -307,14 +317,14 @@ a {
   flex-wrap: nowrap;
 }
 #chat_message {
-  min-height: 1vh!important;
+  min-height: 1vh !important;
 }
 .msg_to,
 .msg_from {
   min-height: 60px;
   background: rgba(0, 0, 0, 0.1);
-  align-items: center!important;
-  display: flex!important;
+  align-items: center !important;
+  display: flex !important;
   word-break: break-all;
   border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
   padding: 15px 10px;
@@ -325,7 +335,7 @@ a {
 }
 .img {
   width: 45px;
-  display: flex!important;
+  display: flex !important;
   align-items: start;
 }
 .img img {
@@ -378,6 +388,9 @@ a {
     display: none;
   }
   .burger {
+    display: flex;
+  }
+  .burger-choice {
     display: flex;
   }
   .choice {

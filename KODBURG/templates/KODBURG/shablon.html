@@ -24,12 +24,10 @@
 
   <body>
     {% block content %}{% endblock content %}
-    {% compress jsinline %}
+  </body>
+  {% compress jsinline %}
     <script src="{% static 'KODBURG/js/index.js' %}"></script>
     <script src="{% static 'KODBURG/js/welcome.js' %}"></script>
-    
-  </body>
-  {% endcompress %}
-
   {% block dop_scripts %}{% endblock dop_scripts %}
+  {% endcompress %}
 </html>

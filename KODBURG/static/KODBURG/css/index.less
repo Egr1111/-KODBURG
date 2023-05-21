@@ -36,6 +36,7 @@ h3 {
   border: solid #f2f2f2 !important;
   background-color: #f2f2f2 !important;
   padding-bottom: 10vh;
+  
 }
 
 img {
@@ -87,9 +88,9 @@ img {
   }
 }
 
-.error{
-  & li{
-    color: red!important;
+.error {
+  & li {
+    color: red !important;
     font-weight: 600;
     list-style-type: none;
   }
@@ -146,7 +147,7 @@ a {
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
 }
-.new_notice{
+.new_notice {
   font-weight: 600;
 }
 
@@ -167,13 +168,16 @@ a {
   & img {
     mix-blend-mode: normal;
   }
-  &.col{
+  &.col {
     word-break: break-all;
   }
 }
 .right-column,
 .left-column {
   width: 29% !important;
+  position: relative!important;
+  top: 0; 
+  z-index: 100
 }
 
 .friend-name {
@@ -216,6 +220,13 @@ a {
   background-color: #1e1e20;
   border-radius: 10px;
   transition: 0.5s;
+  z-index: 1000;
+}
+
+.hed {
+  position: sticky !important;
+  top: 0;
+  z-index: 100;
 }
 .logo {
   padding: 0;
@@ -234,8 +245,8 @@ a {
   flex-direction: column !important;
   padding: 0 !important;
   margin: 0 !important;
-
   top: 5%;
+  display: none;
   visibility: hidden;
 
   &.active {
@@ -271,16 +282,16 @@ a {
   color: black !important;
 }
 
-.a_like{
-  color: red!important;
-  &:hover{
-    color: white!important;
+.a_like {
+  color: red !important;
+  &:hover {
+    color: white !important;
   }
 }
-.a_dislike{
-  color: black!important;
-  &:hover{
-    color: white!important;
+.a_dislike {
+  color: black !important;
+  &:hover {
+    color: white !important;
   }
 }
 
@@ -336,68 +347,68 @@ a {
   white-space: nowrap;
   text-align: center !important;
 }
-.a_link{
+.a_link {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.chat_log{
+.chat_log {
   height: 75vh;
   overflow-y: scroll;
   flex-wrap: nowrap;
 }
-#chat_message{
-  min-height: 1vh!important;
+#chat_message {
+  min-height: 1vh !important;
 }
-.msg_to, .msg_from{
+.msg_to,
+.msg_from {
   min-height: 60px;
   background: rgba(0, 0, 0, 0.1);
-  align-items: center!important;
-  display: flex!important;
+  align-items: center !important;
+  display: flex !important;
   word-break: break-all;
   border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
   padding: 15px 10px;
 
-  &.read{
+  &.read {
     background-color: white;
     // word-break:keep-all;
   }
 }
 
-.img{
+.img {
   width: 45px;
-  display: flex!important;
+  display: flex !important;
   align-items: start;
-  & img{
+  & img {
     height: 45px;
     border-radius: 50%;
     width: 45px;
   }
 }
 
-.msg_to{
+.msg_to {
   flex-direction: row-reverse;
   justify-content: space-around;
   text-align: start;
 }
-.msg_from{
+.msg_from {
   flex-direction: row;
   justify-content: space-around;
   text-align: end;
-
 }
-.new_mes{
+.new_mes {
   background: rgba(255, 0, 0, 0.8);
   width: 3px;
   border-radius: 50%;
 }
-.chat{
+.chat {
   background: rgba(255, 255, 255);
-  transition: .5s;
-  & img{
+  transition: 0.5s;
+  & img {
     mix-blend-mode: normal;
   }
-  &:hover{
+  &:hover {
     background: rgba(0, 0, 0, 0.1);
   }
 }
@@ -423,6 +434,9 @@ a {
     display: none;
   }
   .burger {
+    display: flex;
+  }
+  .burger-choice{
     display: flex;
   }
   .choice {

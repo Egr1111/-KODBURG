@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-80pphc2we1fuvh6p+4z#7=!j!*6hu(gu8k%!9%figrl4%a&+o+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["kodburg.vercel.app"]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -1,0 +1,187 @@
+{% extends 'KODBURG/shablon.html' %} 
+{% block title %}Добро пожаловать в KODBURG!{% endblock title %} 
+
+{% block content %}
+
+<div class="container-fluid justify-content-center p-0 m-0">
+  {% for i in object_list %} 
+    {% if i.title == "enter" %}
+
+    <div class="row align-items-center header">
+      <a href="{% url 'enter' %}" class="col-1"
+        ><img src="{{i.image.url}}" alt="col"
+      /></a>
+    </div>
+    {% elif i.title == "KODBURG" %}
+    <div
+      class="row justify-content-center align-items-center text-center p-0 m-0"
+      style="width: 100%; height: 100vh"
+    >
+      <img class="img-100 col" src="{{i.image.url}}" />
+
+      <h2 class="col welc">Добро пожаловать в KODBURG!</h2>
+    </div>
+
+    {% elif i.title == "about"%}
+    <div
+      class="row justify-content-center align-items-center text-center h-100"
+      style="background-color: white"
+    >
+      <div
+        class="card align-items-center"
+        style="
+          width: 55rem;
+          background-color: white !important;
+          border: solid white !important;
+          padding: 5vh 0 30vh 0;
+        "
+      >
+        <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h3 class="card-title col-6 offset-3">О сайте</h3>
+          <p class="card-text">
+            Этот сайт был создан для обучения всех желающих программированию. Но
+            не питайте ложных надежд! <br />
+            Если вы думаете, что после прохождения всех уроков вы станете
+            первоклассным программистом, то мне придется Вас разочаровать.
+            <br />
+            Здесь будут представлены уроки лишь по основам веб-программирования,
+            но чтобы усвоить хотя бы половину из этого, вам придется применять
+            полученные знания на практике самим: создавать маленькие сайты, по
+            некоторым вопросам обращаться к интернету и самостоятельно продолжать
+            обучение, ведь программист - это человек, который всю жизнь обучается.
+            Я сам только начинаю свой путь в программировании и ОЧЕНЬ многому мне
+            нужно еще научиться, но я надеюсь, что смогу вас чему-нибудь научить.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row justify-content-center align-items-center text-center"
+      style="background-color: #f2f2f2 !important"
+    >
+      <div class="col-12 text-center">
+        <h2
+          class="col-12 what-you-learn"
+          style="margin: 10vh 0 0 0 !important; padding: 0 !important"
+        >
+          Чему вы научитесь
+        </h2>
+      </div>
+
+      <div
+        class="row justify-content-around align-items-center col-10"
+        style="heght: 100%"
+      >
+    {% elif i.title == "python"%}
+      <div
+        class="card align-items-start justify-content-center"
+        style="width: 22rem"
+      >
+        <div class="col-12">
+          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+        </div>
+        <div class="card-body text-center">
+          <h3 class="card-title">Программирование на Python</h3>
+          <p class="card-text">
+            Python - это высокоуровневый и один из самых популярных языков
+            программирования, который не знает только ленивый. В этот модуль
+            войдут изучение списков, словарей, функций и классов.
+          </p>
+        </div>
+      </div>
+    {% elif i.title == "html"%}
+      <div
+        class="card align-items-start justify-content-center"
+        style="width: 22rem"
+      >
+        <div class="col-12">
+          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+        </div>
+        <div class="card-body text-center">
+          <h3 class="card-title">HTML, CSS и JS</h3>
+          <p class="card-text h-100">
+            HTML, CSS и JS - это три кита, на которых держится все
+            веб-программирование. Конечно существует множество модулей,
+            облегчивших до невозможности разработку веб-приложений и множество
+            языков программирования, которые выполняют все те же функции, что и
+            HTML, CSS, и JS, но знать основы должен каждый веб-программист. Этот
+            модуль включает в себя изучение основ разработки на HTML, CSS и JS
+          </p>
+        </div>
+      </div>
+    {% elif i.title == "django" %}
+      <div
+        class="card align-items-start justify-content-center"
+        style="width: 22rem"
+      >
+        <div class="col-12">
+          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+        </div>
+        <div class="card-body text-center">
+          <h3 class="card-title">Программирование на Django</h3>
+          <p class="card-text">
+            Django - высокоуровневый веб-фреймворк Python, который способствует
+            быстрой разработке и его изучение облегчит жизнь веб-разработчикам.
+            В этом модуле буду изучаться основные функции Django: создание
+            приложений, страниц, связь между страницами, создание баз данных и
+            управление ею, создание форм и т.п.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="row justify-content-center align-items-center"
+    style="height: 100vh"
+  >
+  {% elif i.title == "register"%}
+    <div class="row justify-content-center align-items-center text-center">
+      <img class="img-100" src="{{i.image.url}}" />
+      <form method="post">
+        {% csrf_token %}
+        <div class="row justify-content-center align-items-center text-center">
+          <h2 class="col-12 from-h2" style="color: white !important">
+            Ну, в принципе, все что тебе нужно знать ты
+          </h2>
+          <h2 class="col-12 from-h2" style="color: white !important">
+            знаешь. Теперь пора зарегистрироваться и начать
+          </h2>
+          <h2 class="col-12 from-h2" style="color: white !important">
+            путешествие в мир IT!
+          </h2>
+
+           
+          {% for item in form %} 
+            {% if item.errors %}
+
+              <label for="{{item.id_for_label}}" class="from-label col-12 error"
+                >{{item.errors}}</label
+              >
+            {% else %}
+              <label for="{{item.id_for_label}}" class="from-label col-12"
+                >{{item.label}}</label
+              >
+            {% endif %}
+          {{item}} 
+          {% endfor %}
+          <div class="col-12">
+            <button
+              class="submit col-xxl-3 col-lg-5 col-md-8 col-sm-12"
+              type="submit"
+            >
+              Вперед в светлое будущее!
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
+  {% endfor %}
+  
+</div>
+
+{% endblock content %}

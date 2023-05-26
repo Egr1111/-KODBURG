@@ -1,0 +1,161 @@
+{% extends 'KODBURG/shablon_main.html' %} 
+{% block content %}
+
+<div class="row justify-content-center align-items-center list">
+  <div
+    id="carouselId"
+    class="carousel slide carousel-fade"
+    data-bs-ride="carousel"
+  >
+    <ol class="carousel-indicators">
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="First slide"
+      ></li>
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="1"
+        aria-label="Second slide"
+      ></li>
+      <li
+        data-bs-target="#carouselId"
+        data-bs-slide-to="2"
+        aria-label="Third slide"
+      ></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        <img
+          src="/media/img/start.jpg"
+          class="w-100 d-block"
+          alt="First slide"
+        />
+        <div class="carousel-caption d-none d-md-block">
+          <h3 class="col">Добро пожаловать в сообщество, {{user.username}}!</h3>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img
+          src="/media/img/video_start.webp"
+          class="w-100 d-block"
+          alt="Second slide"
+        />
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Title</h3>
+        </div>
+      </div>
+      <a class="carousel-item">
+        <img
+          src="/media/img/link_to_programm.webp"
+          class="w-100 d-block"
+          alt="Third slide"
+        />
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Title</h3>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+{% block main_content %}
+
+<div
+  class="row justify-content-center align-items-center list border-bottom g-2"
+>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <a class="nav-item" role="presentation" href="{% url 'main_blog' %}">
+      <button
+        class="nav-link a_black"
+        id="home-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#home"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Записи
+      </button>
+    </a>
+    <a class="nav-item" role="presentation" href="{% url 'main_project' %}">
+      <button
+        class="nav-link active text-primary"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        Проекты
+      </button>
+    </a>
+  </ul>
+</div>
+<!-- Tab panes -->
+<div class="tab-content">
+  <div
+    class="tab-pane justify-content-center active row"
+    id="profile"
+    role="tabpanel"
+    aria-labelledby="profile-tab"
+  >
+    {% for i in projects %}
+    {% if user != i.username %}
+
+    <div class="row justify-content-center align-items-center list g-2" id="{{i.id}}">
+      <div class="row justify-content-center align-items-center">
+        
+          <h3 class="col-12 text-center">{{i.title}}</h3>
+        
+        {% if i.img.url != "/media/User/blog/enter.png" %}
+        <img src="{{i.img.url}}" alt="" class="col-12" />
+        {% endif %}
+        <div class="row col project">
+          <a
+            href="{{i.file.url}}"
+            class="col-12 link-project"
+            style="color: black !important"
+            >{{i.file.name}}</a
+          >
+        </div>
+
+        <div class="col-12 p-3" style="word-break: break-all;">{{i.text}}</div>
+        
+        <h6 class="col-12">{{i.date}}</h6>
+        
+        <a class="col-12 a_black text-decoration-underline" href="{% url 'other_user' i.username.username i.username.id %}" >{{i.username.username}}</a>
+            
+        <div class="row justify-content-start align-items-center g-2">
+        {% if user in i.like.all %}
+          <a id = "{{i.id}}" name="project" class="btn btn-danger col-2 like" role="button">{{i.like.count}}</a>
+        {% else %}
+          <a id = "{{i.id}}" name="project" class="btn btn-outline-danger col-2 a_like like" role="button">{{i.like.count}}</a>
+        {% endif %}
+        {% if user in i.dislike.all %}
+          <a id = "{{i.id}}" name="project" class="btn btn-dark col-2 dislike" role="button">{{i.dislike.count}}</a>
+        {% else %}
+          <a id = "{{i.id}}" name="project" class="btn btn-outline-dark col-2 a_dislike dislike" role="button">{{i.dislike.count}}</a>
+        {% endif %}
+        </div>
+      </div>
+      <a name="" id="" class="btn btn-primary" href="{% url 'project_details' i.id %}" role="button">Оставить комментарий</a>
+
+
+      
+    </div>
+    {% endif %}
+
+    {% endfor %}
+  </div>
+</div>
+
+  {% endblock main_content %} 
+{% endblock content %} 
+  
+

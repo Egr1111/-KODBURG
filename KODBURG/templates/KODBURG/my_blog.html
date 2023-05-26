@@ -1,0 +1,66 @@
+{% extends 'KODBURG/shablon_main.html' %}
+
+{% block title %}Блог {{user.username}}{% endblock title %}
+
+{% block content %}
+
+
+
+
+{% if object_list %}
+    <div class="row justify-content-center align-items-center g-2">
+        <a href="{% url 'add_blog' %}" class="btn btn-success" type="button">Создать статью</a>
+    </div>
+    {% for i in object_list %}
+
+
+            <div class="row justify-content-center align-items-center list g-2">
+              <div class="row justify-content-center align-items-center">
+                <h3 class="col-12 text-center">{{i.title}}</h3>
+                {% if i.img.url != "/media/User/blog/enter.png" %}
+                <img src="{{i.img.url}}" alt="" />
+                {% endif %}
+                <div class="col-12 p-3" style="word-break: break-all;">{{i.text}}</div>
+
+                <h6 class="col-12">{{i.date}}</h6>
+                
+                <a
+                  name=""
+                  id=""
+                  class="a_black text-decoration-underline"
+                  href="{% url 'other_user' i.username.username i.username.id %}"
+                  role="button"
+                  >{{i.username.username}}</a
+                >
+                <div class="row justify-content-start align-items-center g-2">
+                    <div id="" class="btn btn-danger col-2" role="button">{{i.like.count}}</div>
+                    <div id="" class="btn btn-dark col-2" role="button">{{i.dislike.count}}</div>
+                </div>
+                <div class="row justify-content-center align-items-center g-2">
+                    <a name="" id="" class="btn btn-primary" href="{% url 'update_blog' i.username i.id %}" role="button">Изменить статью</a>
+                </div>
+                
+                <div class="row justify-content-center align-items-center g-2">
+                    <a name="" id="" class="btn btn-danger" href="{% url 'delete_blog' i.username i.id %}" role="button">Удалить статью</a>
+                </div>
+                <div class="row justify-content-center align-items-center g-2">
+                  <a name="" id="" class="btn btn-primary" href="{% url 'blog_details' i.id %}" role="button">Оставить комментарий</a>
+                </div>
+            </div>
+              
+        </div>
+    {% endfor %}
+
+{% else %}
+<div class="row justify-content-center align-items-center text-center g-2">
+<h1 class="no_blog1">У вас пока нет записей</h1>
+</div>
+
+<div class="row justify-content-center align-items-center g-2">
+    <a href="{% url 'add_blog' %}" class="btn btn-success" type="button">Создать статью</a>
+</div>
+{% endif %}
+{% endblock content %}
+
+
+

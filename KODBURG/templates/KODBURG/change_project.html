@@ -1,0 +1,66 @@
+{% extends 'KODBURG/shablon_main.html' %} 
+{% block title %}Изменение поста {{form.title.value}}{% endblock title %} 
+{% block content %} 
+{% if user.pk == form.username.value %}
+<div class="row justify-content-center align-items-center g-2 text-center">
+  <h3>Форма изменения проекта</h3>
+</div>
+
+<form
+  action=""
+  method="post"
+  enctype="multipart/form-data"
+  class="list justify-content-start row"
+>
+  {% csrf_token %} {% if error %}
+  <div class="alert alert-danger" role="alert">{{error}}</div>
+
+  {% endif %}
+  <fieldset class="justify-content-start row">
+    <div class="row justify-content-start align-items-center p-3">
+      <label for="">Введите название проекта</label>
+      {{form.title}}
+    </div>
+
+    <div class="row justify-content-start align-items-center p-3">
+      <label for="">Загрузите фото для проекта</label>
+      {{form.img}}
+    </div>
+
+    <div class="row justify-content-start align-items-center p-3">
+      <label for="">Загрузите папку с проектом(папка с проектом должна быть заархивированна)</label>
+      {{form.file}}
+    </div>
+
+    <div class="row justify-content-start align-items-center p-3">
+      <label for="">Введите текст проекта</label>
+      {{form.text}}
+    </div>
+    <select
+      type="text"
+      name="username"
+      maxlength="255"
+      id="id_username"
+      style="transform: scale(0); display: none"
+    >
+    <option value="{{user.id}}">{{user}}</option>
+    </select>
+
+    <div class="row justify-content-start align-items-center p-3">
+      <button type="submit" class="btn btn-primary">Изменить проект</button>
+    </div>
+  </fieldset>
+</form>
+
+{% else %}
+<div class="row justify-content-center align-items-center text-center">
+  <h5 class="col">
+    Пытаться изменить чужой проект и выставить на посмешище другого человека - это
+    так низко, ну просто фу!<br />
+    Для таких как ты приготовлен отдельный котел в аду!<br />
+    А теперь пошел прочь!<br />
+  </h5>
+</div>
+{% endif %} {% endblock content %}
+
+

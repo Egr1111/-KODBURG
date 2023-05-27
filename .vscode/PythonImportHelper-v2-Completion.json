@@ -1383,15 +1383,6 @@
         "documentation": {}
     },
     {
-        "label": "SECRET_KEY",
-        "kind": 5,
-        "importPath": "main.settings",
-        "description": "main.settings",
-        "peekOfCode": "SECRET_KEY = 'django-insecure-80pphc2we1fuvh6p+4z#7=!j!*6hu(gu8k%!9%figrl4%a&+o+'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = []\nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')\nLOGIN_REDIRECT_URL = '/main_blog'\nMESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'\nSTATICFILES_DIRS = [\n    os.path.join(MEDIA_ROOT, \"User\")",
-        "detail": "main.settings",
-        "documentation": {}
-    },
-    {
         "label": "DEBUG",
         "kind": 5,
         "importPath": "main.settings",

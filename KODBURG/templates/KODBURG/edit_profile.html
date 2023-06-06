@@ -1,5 +1,7 @@
-{% extends 'KODBURG/shablon_main.html' %} {% block title%}Профиль
-{{user.username}}{% endblock title %} {% block content %}
+
+{% extends 'KODBURG/shablon_main.html' %}
+{% load static %} 
+{% block title%}Профиль {{user.username}}{% endblock title %} {% block content %}
 
 <form
   action=""
@@ -8,7 +10,8 @@
   ,
   class="justify-content-center row list"
 >
-  {% csrf_token %} {% if error %}
+  {% csrf_token %} 
+  {% if error %}
 
   <label
     class="from-label col-12 alert alert-danger"
@@ -26,6 +29,23 @@
     >
     {{i}} {% endfor %}
   </fieldset>
+  <div class="row justify-content-center align-items-center g-2 text-center">
+  {% if not user.email_confirm %}
+  
+    <a class="btn btn-primary col-12 email_confirm" type="button" href="{% url 'email_send_confirm' user.email %}">
+      Подтвердить почту
+    </a>
+    <div class="col email_label">
+      Вы не сможете поменять пароль, пока почта не подтверждена!<br>
+      (Не бойтесь не подтверждать. Почта для подтверждения обновляется сразу, но чтобы сохранить изменения в профиле подтвердить изменения все-таки придется.)
+    </div>
+
+  {% else %}
+    <a class="btn btn-primary col-12" type="button" href="{% url 'password_change_confirm' user.email %}">
+      Изменить пароль
+    </a>
+  {% endif %}
+</div>
   <div class="row justify-content-center align-items-center g-2">
     <button type="submit" class="btn btn-primary col-12">
       Подтвердить изменения
@@ -40,3 +60,7 @@
 
 {% endblock content %} 
 
+{% block dop_scripts %}
+
+<script src="{% static 'KODBURG/js/edit_user.js' %}"></script>
+{% endblock dop_scripts %}

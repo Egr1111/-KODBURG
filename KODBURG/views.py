@@ -1,3 +1,6 @@
+import random
+import socket
+import string
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
@@ -10,18 +13,17 @@ from django.views.generic import (
     CreateView,
 )
 
-
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
-from django.contrib import messages
+from django.contrib.auth import authenticate, login
 
-from django.shortcuts import get_object_or_404
+
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
-from django.db.models import Count
+from django.core.mail import EmailMessage
+from django.contrib.auth.hashers import check_password, make_password
+
+
+
 
 
 class Welcome(CreateView):
@@ -60,6 +62,7 @@ def main_blog(request):
         },
     )
 
+
 def main_project(request):
     form_project = Comments_to_projects()
 
@@ -81,14 +84,15 @@ def main_project(request):
         },
     )
 
+
 def blog_details(request, id):
-    if len(Blog_list.objects.filter(id = id)) == 0:
-        return redirect(request.META.get('HTTP_REFERER'))
-    blog = Blog_list.objects.get(id = id)
-    comments = Comment_blog.objects.filter(blog = blog)
+    if len(Blog_list.objects.filter(id=id)) == 0:
+        return redirect(request.META.get("HTTP_REFERER"))
+    blog = Blog_list.objects.get(id=id)
+    comments = Comment_blog.objects.filter(blog=blog)
     print(comments)
     comments_form = Comments_to_blog()
-    
+
     if request.method == "POST":
         comments_form = Comments_to_blog(request.POST, request.FILES)
         if comments_form.is_valid():
@@ -96,13 +100,18 @@ def blog_details(request, id):
             comments_form.author = request.user
             comments_form.save()
             return redirect("blog_details", id)
-    return render(request, "KODBURG/blog_details.html", {"i": blog, "comments_blog": comments, "form_blog": comments_form})
+    return render(
+        request,
+        "KODBURG/blog_details.html",
+        {"i": blog, "comments_blog": comments, "form_blog": comments_form},
+    )
+
 
 def project_details(request, id):
-    if len(Project_list.objects.filter(id = id)) == 0:
-        return redirect(request.META.get('HTTP_REFERER'))
-    project = Project_list.objects.get(id = id)
-    comments = Comment_project.objects.filter(project = project)
+    if len(Project_list.objects.filter(id=id)) == 0:
+        return redirect(request.META.get("HTTP_REFERER"))
+    project = Project_list.objects.get(id=id)
+    comments = Comment_project.objects.filter(project=project)
     comments_form = Comments_to_projects()
     if request.method == "POST":
         comments_form = Comments_to_projects(request.POST, request.FILES)
@@ -111,7 +120,11 @@ def project_details(request, id):
             comments_form.author = request.user
             comments_form.save()
             return redirect("project_details", id)
-    return render(request, "KODBURG/project_details.html", {"i": project, "comments_project": comments, "form_project": comments_form})
+    return render(
+        request,
+        "KODBURG/project_details.html",
+        {"i": project, "comments_project": comments, "form_project": comments_form},
+    )
 
 
 class My_friends(TemplateView):
@@ -120,7 +133,8 @@ class My_friends(TemplateView):
 
 class My_notice(TemplateView):
     template_name = "KODBURG/my_notice.html"
-    
+
+
 class My_descriptions(TemplateView):
     template_name = "KODBURG/my_descriptions.html"
 
@@ -128,10 +142,15 @@ class My_descriptions(TemplateView):
 @login_required
 def update_profile(request):
     error = ""
+    email_now = request.user.email
     if request.method == "POST":
         user_form = UserForm(request.POST, request.FILES, instance=request.user)
         if user_form.is_valid():
+            print(email_now, user_form.data["email"])
             user_form.save()
+            if user_form.data["email"] != email_now:
+                User.objects.filter(id=request.user.id).update(email_confirm=False)
+                print(email_now, user_form.data["email"])
             return redirect("main_blog")
         else:
             error = "Ошибка в заполнении формы"
@@ -145,6 +164,197 @@ def update_profile(request):
             "user_form": user_form,
             "error": error,
         },
+    )
+
+
+@login_required
+def email_send_confirm(request, email):
+    email_hash = make_password(email)
+    while "/" in email_hash:
+        email_hash = make_password(email)
+    print(email_hash)
+    User.objects.filter(id=request.user.id).update(email_hash=email_hash)
+    try:
+        email = EmailMessage(
+            "Подтверждение email",
+            f"""
+                            <html>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h1>Привет, {request.user.username}!</h1>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h3>Перейди по ссылке ниже, чтобы подтвердить, что это ваша почта или проигнорировать это письмо, если понятия не имеете, почему тебе пришло это письмо.</h3>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <a href='http://{request.META['HTTP_HOST']}/email_confirm/{email_hash}/{request.user.username}'>Вот по этой ссылке</a>
+                                </div>""",
+            to=[email],
+        )
+        email.content_subtype = "html"
+        email.send()
+        return render(request, "KODBURG/email_send_confirm.html", {"error": False})
+    except:
+        return render(request, "KODBURG/email_send_confirm.html", {"error": True})
+
+
+
+def emailConfirm(request, email_hash, username):
+    if not request.user.is_authenticated:
+        user = authenticate(username=username)
+        if user is not None:
+            login(request, user)
+            
+    if request.user.email_hash == email_hash and request.user.email_hash != "":
+            User.objects.filter(id=request.user.id).update(email_confirm=True)
+            User.objects.filter(id=request.user.id).update(email_hash="")
+            return render(request, "KODBURG/email_confirm.html")
+
+
+@login_required
+def password_send_change(request, email):
+    password_hash = make_password(email)
+    while "/" in password_hash:
+        password_hash = make_password(email)
+    print(password_hash)
+    User.objects.filter(id=request.user.id).update(password_hash=password_hash)
+    try:
+        email = EmailMessage(
+            "Подтверждение email",
+            f"""
+                            <html>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h1>Привет, {request.user.username}!</h1>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h3>Перейди по ссылке ниже, чтобы подтвердить, что это твоя почта или проигнорировать это письмо, если понятия не имеете, почему тебе пришло это письмо.</h3>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <a href='http://{request.META['HTTP_HOST']}/password_change/{password_hash}/{request.user.username}'>Вот по этой ссылке</a>
+                                </div>""",
+            to=[email],
+        )
+        email.content_subtype = "html"
+        email.send()
+        return render(request, "KODBURG/password_change_confirm.html", {"error": False})
+    except:
+        return render(request, "KODBURG/password_change_confirm.html", {"error": True})
+
+
+
+def passwordChange(request, password_hash, username):
+    if not request.user.is_authenticated:
+        
+        user = User.objects.filter(username = username)
+        print(len(user))
+        if len(user) != 0:
+            print(2)
+            login(request, user[0])
+    print(3)
+
+    if request.user.password_hash == password_hash and request.user.password_hash != "":
+        error = ""
+        form = UserPasswordForm()
+        if request.method == "POST":
+            form = UserPasswordForm(request.POST)
+            if form.is_valid():
+                # form.save()
+                user = User.objects.get(id=request.user.id)
+                user.set_password(form.cleaned_data["password"])
+                user.save()
+                User.objects.filter(id=request.user.id).update(password_hash="")
+                return redirect("/profile/")
+            else:
+                error = "Поле не может быть пустым!"
+                return render(
+                    request,
+                    "KODBURG/password_change.html",
+                    {"form": form, "error": error},
+                )
+
+        return render(
+            request, "KODBURG/password_change.html", {"form": form, "error": error}
+        )
+
+
+def search_lost_user(request):
+    error = ""
+    user = ""
+    form = UserLostForm()
+    if request.method == "POST":
+        form = UserLostForm(request.POST)
+
+        username = form.data["username"]
+        email = form.data["email"]
+
+        if username != "" and email != "":
+            user = User.objects.filter(username=username, email=email)
+        elif username != "" and email == "":
+            user = User.objects.filter(username=username)
+        elif email != "" and username == "":
+            user = User.objects.filter(email=email)
+        else:
+
+            form = UserLostForm()
+            error = "Минимум одно поле должно быть заполнено"
+            return render(
+                request,
+                "KODBURG/search_lost_user.html",
+                {"form": form, "find_user": user, "error": error},
+            )
+
+        if len(user) != 0:
+            if user[0].email_confirm:
+                password_hash = make_password(user[0].email)
+                while "/" in password_hash:
+                    password_hash = make_password(user[0].email)
+                    
+                user.update(password_hash = password_hash)
+                email = EmailMessage(
+                    "Изменение пароля",
+                    f"""<html>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h1>Привет, {user[0].username}!</h1>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <h3>Перейди по ссылке ниже, чтобы подтвердить, что это ваша почта или проигнорировать это письмо, если понятия не
+                                        имеете, почему тебе пришло это письмо.</h3>
+                                </div>
+                                <div style='display: flex; justify-content: center; text-align: center'>
+                                    <a href='http://{request.META['HTTP_HOST']}/password_change/{password_hash}/{user[0].username}'>Вот по этой ссылке</a>
+                                </div>
+                            </html>""",
+                    to=[user[0].email],
+                )
+                email.content_subtype = "html"
+                email.send()
+                return render(
+                    request,
+                    "KODBURG/search_lost_user.html",
+                    {"form": form, "find_user": user[0], "error": error},
+                )
+
+            else:
+                error = (
+                    "У этого ползователя неподтвержден email. Смена пароля невозможна!"
+                )
+                return render(
+                    request,
+                    "KODBURG/search_lost_user.html",
+                    {"form": form, "find_user": user, "error": error},
+                )
+
+        else:
+            error = "Такого пользователя нет!"
+            return render(
+                request,
+                "KODBURG/search_lost_user.html",
+                {"form": form, "find_user": user, "error": error},
+            )
+
+    return render(
+        request,
+        "KODBURG/search_lost_user.html",
+        {"form": form, "find_user": user, "error": error},
     )
 
 
@@ -339,6 +549,11 @@ def other_user(request, username, userID):
     connection_from = Requests.objects.filter(user_from=from_user, user_to=to_user)
     connections_to = Requests.objects.filter(user_from=to_user, user_to=from_user)
 
+    # smptObj = smtplib.SMTP('localhost')
+    # smptObj.starttls()
+    # smptObj.sendmail("egorkultinn@mail.ru", "yegor.kultin@bk.ru", "Hello, world!")
+    # smptObj.quit()
+
     if object:
         if len(object) > 1:
             for i in range(len(object)):
@@ -393,8 +608,6 @@ def other_user(request, username, userID):
 
 
 def chat(request, user_from, user_to):
-    
-
     my_id = request.user.pk
     print(user_from, user_to)
     user1 = User.objects.get(pk=user_from)
@@ -471,7 +684,7 @@ def messager(request):
     Users = User.objects.all()
     rooms = Room.objects.all().order_by("time_create")
     notice = Notice.objects.filter(usernameTo=request.user).order_by("-date")[:3]
-    
+
     list = {}
     for i in rooms:
         if request.user.username in i.title:

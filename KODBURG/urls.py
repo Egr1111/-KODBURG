@@ -3,13 +3,19 @@ from . import views
 
 urlpatterns = [
     path('', views.Welcome.as_view(), name="welcome"),
+    path('enter/', views.Enter.as_view(), name="enter"),
+    path('profile/', views.update_profile, name="profile"),
+    path('exit/', views.LogoutView.as_view(template_name="KODBURG/welcomeBack.html"), name="exit"),
+    path('email_confirm/<str:email_hash>/<str:username>/', views.emailConfirm, name="email_confirm"),
+    path('email_send_confirm/<str:email>/', views.email_send_confirm, name="email_send_confirm"),
+    path('password_change/<str:password_hash>/<str:username>/', views.passwordChange, name="password_change"),
+    path('password_change_confirm/<str:email>/', views.password_send_change, name="password_change_confirm"),
+    path('lost_user/', views.search_lost_user, name="search_lost_user"),
+    
     path('main_blog/', views.main_blog, name="main_blog"),
     path('main_project/', views.main_project, name="main_project"),
     path('main_blog/<int:id>/details/', views.blog_details, name = "blog_details"),
     path('main_project/<int:id>/details/', views.project_details, name = "project_details"),
-    path('enter/', views.Enter.as_view(), name="enter"),
-    path('profile/', views.update_profile, name="profile"),
-    path('exit/', views.LogoutView.as_view(template_name="KODBURG/welcomeBack.html"), name="exit"),
     path('main/my_blog/', views.my_blog, name="my_blog"),
     path("main/friends", views.My_friends.as_view(), name="my_friends"),
     path("main/my_notice", views.My_notice.as_view(), name="my_notice"),

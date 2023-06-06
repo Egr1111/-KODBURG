@@ -6,14 +6,17 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     image = models.ImageField(upload_to="User/photo", default="kodburg/enter.png")
     bio = models.TextField(verbose_name="Биография")
-    friends = models.ManyToManyField("User", blank=True)
-    notice = models.ManyToManyField("Notice", blank=True)
-    descriptions = models.ManyToManyField("User", blank=True, related_name="Descriptions")
-    chats = models.ManyToManyField("Room", blank=True)
-    connections = models.ManyToManyField("Requests", blank=True, related_name="connections")
+    friends = models.ManyToManyField("User", blank=True, verbose_name="Друзья")
+    notice = models.ManyToManyField("Notice", blank=True, verbose_name="Уведомления")
+    descriptions = models.ManyToManyField("User", blank=True, related_name="Descriptions", verbose_name="Подписки")
+    chats = models.ManyToManyField("Room", blank=True, verbose_name="Переписки")
+    connections = models.ManyToManyField("Requests", blank=True, related_name="connections", verbose_name="Связи")
     new_messages = models.BooleanField(blank=True, default=False)
+    email_hash = models.CharField(max_length=10000, null=True, blank=True, default="")
+    email_confirm = models.BooleanField(blank=True, default=False)
+    password_hash = models.CharField(max_length=10000, null=True, blank=True, default="")
 
-    
+
 
 class Blog_list(models.Model):
     title = models.CharField(max_length=255)
@@ -80,7 +83,6 @@ class Comment_blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(auto_now=True)
 
-    
 
 class Comment_project(models.Model):
     project = models.ForeignKey(Project_list, on_delete=models.CASCADE, null=True, blank=True)
@@ -104,7 +106,6 @@ class Messages(models.Model):
     viewed = models.BooleanField(default=False)
     time_send = models.DateTimeField(auto_now=True)
     room = models.ForeignKey("Room", on_delete=models.CASCADE, null=True, blank=True)
-    
     def __str__(self):
         return self.message
     

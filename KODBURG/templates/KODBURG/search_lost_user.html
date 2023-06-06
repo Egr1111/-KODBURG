@@ -1,0 +1,43 @@
+{% extends 'KODBURG/shablon.html' %}
+{% block title %}Забыли пароль?{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="container">
+        <form class="row align-items-center justify-content-center" method="POST" novalidate>
+            <div class="row justify-content-center align-items-center g-2 text-center">
+            <h3 class="col">Введите или свой username, или email, или то и другое</h3>
+            
+            {% csrf_token %}
+            {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+                {% endif %}
+            {% for i in form %}
+                
+                <label
+                for="{{i.id_for_label}}"
+                class="from-label col-12"
+                style="color: black !important"
+                >{{i.label}}</label
+                >
+                {{i}}
+            {% endfor %}
+        </div>
+        <div class="row justify-content-center align-items-center g-2">
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </div>
+    </form>
+        {% if find_user %}
+            <div class="row justify-content-center align-items-center g-2 text-center">
+                <h4 class="col-12">На почту {{find_user.email}} отправлено письмо. <br>
+                Когда получите его перейдите по ссылке, которая будет в письме, чтобы подтвердить свой email.
+                </h4>
+            </div>
+        {% endif %}
+        
+    </div>
+</div>
+
+{% endblock content %}

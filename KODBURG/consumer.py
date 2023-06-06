@@ -1,7 +1,8 @@
-from channels.consumer import AsyncConsumer, StopConsumer, SyncConsumer
+
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.db.models import Case, Value, When
+
+
 from asgiref.sync import sync_to_async, async_to_sync
 
 from .models import *
@@ -188,7 +189,6 @@ class MyWebConsumer(AsyncWebsocketConsumer):
         if self.scope["user"].is_authenticated:
             self.group_name = self.scope["url_route"]["kwargs"]["room_name"]
             await self.channel_layer.group_add(self.group_name, self.channel_name)
-
             print("New websocket connect...")
             await self.accept()
             if (
@@ -218,13 +218,7 @@ class MyWebConsumer(AsyncWebsocketConsumer):
                         ),
                     )
 
-            elif (
-                self.group_name != f"TotalConsumer-{self.scope['user'].id}"
-                and "." not in self.group_name
-            ):
-                to_user = await database_sync_to_async(User.objects.get)(
-                    pk=self.group_name.split("-")[1]
-                )
+            
 
     async def receive(self, text_data=None, bytes_data=None):
         if self.scope["user"].is_authenticated:

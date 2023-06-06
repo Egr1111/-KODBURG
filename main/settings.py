@@ -46,7 +46,7 @@ STATICFILES_DIRS = [
 AUTH_USER_MODEL = 'KODBURG.User'
 
 
-EMAIL_HOST = 'smtp.(Домен твоей почты),
+EMAIL_HOST = 'smtp.(Домен твоей почты)',
 EMAIL_PORT = "(Порт домена твоей электронной почты)",
 EMAIL_HOST_USER = "(Твоя электронная почта)"
 DEFAULT_FROM_EMAIL = "(Твоя электронная почта)",

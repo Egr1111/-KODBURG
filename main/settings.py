@@ -51,7 +51,6 @@ EMAIL_PORT = "(Порт домена твоей электронной почт�
 EMAIL_HOST_USER = "(Твоя электронная почта)"
 DEFAULT_FROM_EMAIL = "(Твоя электронная почта)",
 EMAIL_HOST_PASSWORD = "(Пароль к твоей электронной почте. Он задается отдельно для каждого приложения)"
-EMAIL_HOST_PASSWORD = '9HXZz37cr937dpv9ZC5v'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

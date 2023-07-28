@@ -1,4 +1,4 @@
-console.log("main.py")
+console.log("main.py");
 
 let burger_menu = document.querySelector(".burger-choice").classList;
 let burger_button_img = document.querySelector(".burger-img").classList;

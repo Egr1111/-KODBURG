@@ -3,6 +3,8 @@
 {% block title %}Подписки {{user.username}}{% endblock title %}
 
 {% block content %}
+<div class="row justify-content-center align-items-center g-2 descriptions">
+
 {% for i in user.descriptions.all %}
   <a
       href="{% url 'other_user' i.username i.id %}"
@@ -14,10 +16,10 @@
 
 
 {% empty %}
-  <div class="row justify-content-center text-center align-items-center g-2">
+  <div class="row justify-content-center text-center align-items-center g-2 no_descriptions">
     <div class="col">Вы пока ни на кого не подписаны</div>
   </div> 
 {% endfor %} 
 
-
+</div>
 {% endblock content %}

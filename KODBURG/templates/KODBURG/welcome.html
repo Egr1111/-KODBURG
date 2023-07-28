@@ -1,28 +1,27 @@
 {% extends 'KODBURG/shablon.html' %} 
+{% load static %}
+
 {% block title %}Добро пожаловать в KODBURG!{% endblock title %} 
 
 {% block content %}
 
 <div class="container-fluid justify-content-center p-0 m-0">
-  {% for i in object_list %} 
-    {% if i.title == "enter" %}
+
 
     <div class="row align-items-center header">
       <a href="{% url 'enter' %}" class="col-1"
-        ><img src="{{i.image.url}}" alt="col"
+        ><img src="{% static 'media/kodburg/enter_pNuNezh.png' %}" alt="col"
       /></a>
     </div>
-    {% elif i.title == "KODBURG" %}
     <div
       class="row justify-content-center align-items-center text-center p-0 m-0"
       style="width: 100%; height: 100vh"
     >
-      <img class="img-100 col" src="{{i.image.url}}" />
+      <img class="img-100 col" src="{% static 'media/kodburg/9d7417d306ce59ac57290e8ce11222d2_TipUt1z.jpeg' %}" />
 
       <h2 class="col welc">Добро пожаловать в KODBURG!</h2>
     </div>
 
-    {% elif i.title == "about"%}
     <div
       class="row justify-content-center align-items-center text-center h-100"
       style="background-color: white"
@@ -36,7 +35,7 @@
           padding: 5vh 0 30vh 0;
         "
       >
-        <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+        <img src="{% static 'media/kodburg/icons8-about-200_1_1cORtVi.png' %}" class="card-img-top" alt="..." />
         <div class="card-body">
           <h3 class="card-title col-6 offset-3">О сайте</h3>
           <p class="card-text">
@@ -73,13 +72,13 @@
         class="row justify-content-around align-items-center col-10"
         style="heght: 100%"
       >
-    {% elif i.title == "python"%}
+
       <div
         class="card align-items-start justify-content-center"
         style="width: 22rem"
       >
         <div class="col-12">
-          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+          <img src="{% static 'media/kodburg/icons8-%D0%BF%D0%B8%D1%82%D0%BE%D0%BD-500_1_cH9CKty.png' %}" class="card-img-top" alt="..." />
         </div>
         <div class="card-body text-center">
           <h3 class="card-title">Программирование на Python</h3>
@@ -90,13 +89,13 @@
           </p>
         </div>
       </div>
-    {% elif i.title == "html"%}
+
       <div
         class="card align-items-start justify-content-center"
         style="width: 22rem"
       >
         <div class="col-12">
-          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+          <img src="{% static 'media/kodburg/api_sdk_html_css_java_8jbBE0c.png' %}" class="card-img-top" alt="..." />
         </div>
         <div class="card-body text-center">
           <h3 class="card-title">HTML, CSS и JS</h3>
@@ -110,13 +109,13 @@
           </p>
         </div>
       </div>
-    {% elif i.title == "django" %}
+
       <div
         class="card align-items-start justify-content-center"
         style="width: 22rem"
       >
         <div class="col-12">
-          <img src="{{i.image.url}}" class="card-img-top" alt="..." />
+          <img src="{% static 'media/kodburg/icons8-django-a-high_O29ihRN.png' %}" class="card-img-top" alt="..." />
         </div>
         <div class="card-body text-center">
           <h3 class="card-title">Программирование на Django</h3>
@@ -136,9 +135,9 @@
     class="row justify-content-center align-items-center"
     style="height: 100vh"
   >
-  {% elif i.title == "register"%}
+
     <div class="row justify-content-center align-items-center text-center">
-      <img class="img-100" src="{{i.image.url}}" />
+      <img class="img-100" src="{% static 'media/kodburg/2022-12-09_14-59-02_8ws5naA.png' %}" />
       <form method="post">
         {% csrf_token %}
         <div class="row justify-content-center align-items-center text-center">
@@ -179,8 +178,7 @@
     </div>
   </div>
 
-  {% endif %}
-  {% endfor %}
+
   
 </div>
 

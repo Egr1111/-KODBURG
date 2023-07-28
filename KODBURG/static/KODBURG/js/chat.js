@@ -70,8 +70,6 @@ let ac = new WebSocket(
   "ws://" + window.location.host + "/ws/ac/" + room_name + "/"
 );
 
-
-
 total.addEventListener("open", function (event) {
   console.log("Total websocket connect...", event);
   total.send(
@@ -130,7 +128,6 @@ ac.addEventListener("message", function (event) {
           i.innerHTML =
             "<div class='col p-0 m-0'>Messager</div> <div class='new_mes'></div>";
         });
-
       }
     }
   }

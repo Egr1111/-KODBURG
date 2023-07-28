@@ -2,24 +2,24 @@
 {% block title %}Уведомления {{user.username}}{% endblock title %}
 
 {% block content %}
-  
-    {% for i in user.notice.all %}
-      
-
-          <a
-            href="{% url 'other_user' i.usernameFrom.username i.usernameFrom.id %}"
-            class="row col-12 text-center user-friend align-items-center m-0 p-0 flex-row flex-nowrap a_black h-100"
-          >
-          <img src="{{i.usernameFrom.image.url}}" class="col-1" alt="">
-          <div class="col">{{i.usernameFrom.username}} {{i.text}}</div>
-          </a>
+<div class="row justify-content-center align-items-center g-2 notice">
 
 
-    {% empty %}
-      <div class="row justify-content-center text-center align-items-center g-2">
-        <div class="col">У вас пока нет уведомлений</div>
-      </div> 
-    {% endfor %} 
+{% for i in user.notice.all %}
+  <a
+    href="{% url 'other_user' i.usernameFrom.username i.usernameFrom.id %}"
+    class="row col-12 text-center user-friend align-items-center m-0 p-0 flex-row flex-nowrap a_black h-100"
+  >
+    <img src="{{i.usernameFrom.image.url}}" class="col-1" alt="">
+    <div class="col">{{i.usernameFrom.username}} {{i.text}}</div>
+  </a>
 
+
+{% empty %}
+  <div class="row justify-content-center text-center align-items-center g-2 no_notice">
+    <div class="col">У вас пока нет уведомлений</div>
+  </div> 
+{% endfor %} 
+</div>
   
 {% endblock content %}

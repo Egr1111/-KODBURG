@@ -7,9 +7,8 @@ let chat = document.querySelectorAll(".chat");
 let room_id = document.querySelectorAll(".room_id");
 let limit_time = document.querySelector(".limit_time");
 let id_from = JSON.parse(document.getElementById("my-id").textContent);
-let main = document.querySelector(".main")
-let no_chats = document.querySelector(".no_chats")
-
+let main = document.querySelector(".main");
+let no_chats = document.querySelector(".no_chats");
 
 let list = [];
 let list3 = [];
@@ -28,10 +27,10 @@ total.addEventListener("message", function (event) {
   let new_event = JSON.parse(event.data);
   let type = new_event["type"];
   if (type == "request_chat") {
-    if (no_chats != null){
-      all_chat.removeChild(no_chats)
+    if (no_chats != null) {
+      all_chat.removeChild(no_chats);
     }
-    
+
     let new_room = new_event["request"];
     if (list4.includes(new_room["room_name"]) == false) {
       console.log(list4);
@@ -51,7 +50,8 @@ total.addEventListener("message", function (event) {
       console.log("New contact!");
       all_chat.innerHTML +=
         "<a href='/main/chat/" +
-        parseFloat(new_room["user_from"]) + "/" +
+        parseFloat(new_room["user_from"]) +
+        "/" +
         id_from +
         "/' class='row col-12 justify-content-between align-items-center g-2 border-bottom border-top p-3 flex-nowrap a_black list chat'>" +
         '<div class="img">' +
@@ -195,7 +195,7 @@ for (let i = 0; i < list.length; i++) {
           all_chat.prepend(chat_message);
           // sound_message.play();
           break;
-        }else{
+        } else {
           last_chat[i].innerHTML =
             '<div class="col-10 text-start message" style="word-break: break-all;">' +
             message["user_to"] +
@@ -233,4 +233,3 @@ for (let i = 0; i < list.length; i++) {
     alert("Неожиданная ошибка! Перезагрузите страницу.");
   });
 }
-
